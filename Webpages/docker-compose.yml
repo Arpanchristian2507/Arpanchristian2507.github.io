@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # Frontend Service (React, Vue, or any static site)
+  frontend:
+    image: nginx:alpine
+    container_name: fundraiser_frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/ssl/certs
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  # Backend Service (Node.js, Python, etc.)
+  backend:
+    image: node:16
+    container_name: fundraiser_backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/fundraiser
+      - PAYPAL_CLIENT_ID=AWEMs_pP76AVcHifzjj9ms3ejhfhvhfIIDJTPs0NR4gNKTWwUVwukuThbvc5j2H2ZNE1Rw6r600QwPzH
+      - PAYPAL_CLIENT_SECRET=ELCHltSaHrytj3V5s6gWakUS0nQH20j-lsveDzXsRN4k6DC_g7ixFWbtJkleOq41ZB-3AubhDA62xXf1
+      - PAYPAL_WEBHOOK_ID=95P22820VJ135661P
+    command: npm start
+    depends_on:
+      - db
+
+  # Database Service (PostgreSQL)
+  db:
+    image: postgres:13
+    container_name: fundraiser_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: fundraiser
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
