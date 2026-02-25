@@ -8,7 +8,6 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const navAnchors = navLinks.querySelectorAll('a');
-console.log(navAnchors);
 
 // Scroll: add 'scrolled' class to navbar
 window.addEventListener('scroll', () => {
