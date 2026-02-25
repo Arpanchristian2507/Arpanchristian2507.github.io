@@ -1,3 +1,9 @@
+import * as THREE from 'three';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 // ===========================
 // Navigation
 // ===========================
@@ -104,42 +110,151 @@ function animateCounter(el) {
 }
 
 // ===========================
-// Scroll Reveal
+// Functional Observer (counters + skill bars)
 // ===========================
 
-const revealElements = document.querySelectorAll(
-  '#about, #skills, #projects, #contact, ' +
-  '.stat-card, .project-card, .skill-category, .tech-icon'
-);
-
-revealElements.forEach((el) => el.classList.add('reveal'));
-
-const observer = new IntersectionObserver(
+const functionalObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-
-        // Trigger counter animation when about section is visible
         if (entry.target.id === 'about') {
           document.querySelectorAll('.stat-number').forEach(animateCounter);
         }
-
-        // Trigger skill bars when skills section is visible
         if (entry.target.id === 'skills') {
           document.querySelectorAll('.skill-fill').forEach((bar) => {
             bar.style.width = bar.getAttribute('data-width') + '%';
           });
         }
-
-        observer.unobserve(entry.target);
+        functionalObserver.unobserve(entry.target);
       }
     });
   },
   { threshold: 0.15 }
 );
 
-revealElements.forEach((el) => observer.observe(el));
+document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.observe(el));
+
+// ===========================
+// Three.js Hero Background
+// ===========================
+
+(function initThree() {
+  const canvas = document.getElementById('hero-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.z = 40;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  // Particle field
+  const count = 200;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 100;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({ color: 0x6c63ff, size: 0.35, transparent: true, opacity: 0.75 });
+  const particles = new THREE.Points(geo, mat);
+  scene.add(particles);
+
+  // Subtle wireframe torus
+  const torusGeo = new THREE.TorusGeometry(10, 3, 16, 60);
+  const torusMat = new THREE.MeshBasicMaterial({ color: 0x6c63ff, wireframe: true, transparent: true, opacity: 0.08 });
+  const torus = new THREE.Mesh(torusGeo, torusMat);
+  torus.position.set(18, -5, -10);
+  scene.add(torus);
+
+  // Mouse parallax
+  let mouseX = 0;
+  let mouseY = 0;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 4;
+    mouseY = -(e.clientY / window.innerHeight - 0.5) * 4;
+  });
+
+  function tick() {
+    requestAnimationFrame(tick);
+    particles.rotation.y += 0.0008;
+    particles.rotation.x += 0.0003;
+    torus.rotation.x += 0.003;
+    torus.rotation.y += 0.002;
+    camera.position.x += (mouseX - camera.position.x) * 0.03;
+    camera.position.y += (mouseY - camera.position.y) * 0.03;
+    renderer.render(scene, camera);
+  }
+  tick();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}());
+
+// ===========================
+// GSAP Animations
+// ===========================
+
+// Hero entrance timeline
+gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.75 } })
+  .from('.hero-greeting',    { opacity: 0, y: 30 },        0.2)
+  .from('.hero-name',        { opacity: 0, y: 35 },        0.45)
+  .from('.hero-title',       { opacity: 0, y: 25 },        0.65)
+  .from('.hero-description', { opacity: 0, y: 25 },        0.82)
+  .from('.hero-buttons',     { opacity: 0, y: 20 },        1.0)
+  .from('.social-links',     { opacity: 0, y: 20 },        1.15)
+  .from('.hero-visual',      { opacity: 0, scale: 0.8, duration: 0.9 }, 0.5);
+
+// Section titles
+gsap.utils.toArray('.section-title').forEach((el) => {
+  gsap.from(el, {
+    scrollTrigger: { trigger: el, start: 'top 85%' },
+    opacity: 0, y: 40, duration: 0.7, ease: 'power3.out',
+  });
+});
+
+// About text
+gsap.from('.about-text', {
+  scrollTrigger: { trigger: '.about-grid', start: 'top 80%' },
+  opacity: 0, x: -50, duration: 0.8, ease: 'power3.out',
+});
+
+// Stat cards stagger
+gsap.from('.stat-card', {
+  scrollTrigger: { trigger: '.about-stats', start: 'top 80%' },
+  opacity: 0, y: 40, duration: 0.6, stagger: 0.12, ease: 'power3.out',
+});
+
+// Skill categories
+gsap.from('.skill-category', {
+  scrollTrigger: { trigger: '.skills-grid', start: 'top 80%' },
+  opacity: 0, x: -40, duration: 0.7, stagger: 0.2, ease: 'power3.out',
+});
+
+// Tech icons stagger with bounce
+gsap.from('.tech-icon', {
+  scrollTrigger: { trigger: '.tech-icons', start: 'top 85%' },
+  opacity: 0, scale: 0.4, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
+});
+
+// Project cards stagger
+gsap.from('.project-card', {
+  scrollTrigger: { trigger: '.projects-grid', start: 'top 80%' },
+  opacity: 0, y: 60, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+});
+
+// Contact section
+gsap.from('.contact-info', {
+  scrollTrigger: { trigger: '.contact-grid', start: 'top 80%' },
+  opacity: 0, x: -50, duration: 0.8, ease: 'power3.out',
+});
+gsap.from('.contact-form', {
+  scrollTrigger: { trigger: '.contact-grid', start: 'top 80%' },
+  opacity: 0, x: 50, duration: 0.8, ease: 'power3.out',
+});
 
 // ===========================
 // Contact Form Validation
@@ -197,3 +312,4 @@ contactForm.addEventListener('submit', (e) => {
 // ===========================
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
