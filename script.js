@@ -52,7 +52,7 @@ function highlightActiveLink() {
 const typedEl = document.getElementById('typed-text');
 const roles = [
   'Web Developer',
-  'Frontend Engineer',
+  'Cybersecurity Enthusiast',
   'UI/UX Enthusiast',
   'Creative Coder',
 ];

@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Arpan Christian | Portfolio</title>
     <link rel="stylesheet" href="styles.css" />
-    <link
+<link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
   </head>
 <!-- THREE.js from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -40,6 +43,7 @@
 
     <!-- Hero Section -->
     <section id="hero">
+      <canvas id="hero-canvas"></canvas>
       <div class="hero-content">
         <p class="hero-greeting">Hello, I'm</p>
         <h1 class="hero-name">Arpan Christian</h1>
@@ -87,25 +91,34 @@
               When I'm not coding, I enjoy exploring new technologies, contributing
               to open-source projects, and continuously learning to sharpen my craft.
             </p>
-            <a href="/Resume.pdf" class="btn btn-primary">Download CV</a>
+            <a href="/Portfolio/Resume.pdf" class="btn btn-primary">Download CV</a>
           </div>
           <div class="about-stats">
-            <div class="stat-card">
-              <span class="stat-number" data-target="10">0</span>
-              <span class="stat-label">Projects Completed</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number" data-target="3">0</span>
-              <span class="stat-label">Years Experience</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number" data-target="5">0</span>
-              <span class="stat-label">Technologies Used</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number" data-target="100">0</span>
-              <span class="stat-label">% Dedication</span>
-            </div>
+            <!-- TODO: Link to projects section -->
+            <a href="#Projects" class = "stat-card-link"> 
+              <div class="stat-card">
+                <span class="stat-number" data-target="10">0</span>
+                <span class="stat-label">Projects Completed</span>
+              </div>
+            </a>
+            <a href="/" class = "stat-card-link">
+              <div class="stat-card">
+                <span class="stat-number" data-target="3">0</span>
+                <span class="stat-label">Years Experience</span>
+              </div>
+            </a>
+            <a href="/" class = "stat-card-link">
+              <div class="stat-card">
+                <span class="stat-number" data-target="5">0</span>
+                <span class="stat-label">Technologies Used</span>
+              </div>
+            </a>
+            <a href="/" class = "stat-card-link">
+              <div class="stat-card">
+                <span class="stat-number" data-target="7">0</span>
+                <span class="stat-label">Bugs Hunted</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -306,4 +319,5 @@
     <!-- Your main script -->
 <script src="script.js"></script>
   </body>
+  
 </html>
