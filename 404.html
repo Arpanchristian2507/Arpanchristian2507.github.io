@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 – Under Construction | Arpan Christian</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --color-bg: #0a0a0f;
+        --color-primary: #6c63ff;
+        --color-accent: #ff6584;
+        --color-text: #e0e0e0;
+        --color-text-muted: #9090a0;
+        --color-white: #ffffff;
+        --color-surface: #1a1a24;
+        --color-border: #2a2a3a;
+        --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      }
+
+      html, body {
+        height: 100%;
+        font-family: var(--font-sans);
+        background: var(--color-bg);
+        color: var(--color-text);
+        overflow: hidden;
+      }
+
+      /* Three.js canvas */
+      #bg-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* Main content */
+      .page {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 2rem;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      /* Glowing 404 */
+      .error-code {
+        font-size: clamp(6rem, 20vw, 12rem);
+        font-weight: 900;
+        line-height: 1;
+        color: transparent;
+        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: drop-shadow(0 0 40px rgba(108, 99, 255, 0.5));
+        letter-spacing: -4px;
+      }
+
+      /* Animated gear icon */
+      .gear-wrap {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+        color: var(--color-primary);
+      }
+
+      .fa-gear { animation: spin 4s linear infinite; display: inline-block; }
+
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Headline */
+      .headline {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        font-weight: 700;
+        color: var(--color-white);
+      }
+
+      /* Sub-text */
+      .subtext {
+        font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+        color: var(--color-text-muted);
+        max-width: 480px;
+        line-height: 1.7;
+      }
+
+      /* Progress bar (decorative) */
+      .progress-wrap {
+        width: min(400px, 90vw);
+      }
+
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        color: var(--color-text-muted);
+        margin-bottom: 0.5rem;
+      }
+
+      .progress-track {
+        height: 8px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+        border-radius: 4px;
+        transition: width 2s ease;
+      }
+
+      /* Home button */
+      .btn-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: var(--color-primary);
+        color: var(--color-white);
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        border: 2px solid transparent;
+        transition: background 0.3s, transform 0.3s;
+      }
+
+      .btn-home:hover {
+        background: #574fd6;
+        transform: translateY(-3px);
+      }
+
+      /* Floating construction signs (decorative) */
+      .badge {
+        position: fixed;
+        font-size: 1.6rem;
+        animation: float 5s ease-in-out infinite;
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
+        opacity: 0.18;
+      }
+
+      .badge:nth-child(1) { top: 12%; left: 8%; animation-delay: 0s; }
+      .badge:nth-child(2) { top: 70%; left: 5%; animation-delay: 1.2s; }
+      .badge:nth-child(3) { top: 20%; right: 7%; animation-delay: 0.6s; }
+      .badge:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 1.8s; }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-14px); }
+      }
+
+      @media (max-width: 480px) {
+        .error-code { letter-spacing: -2px; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Floating decorative badges -->
+    <span class="badge">🚧</span>
+    <span class="badge">⚙️</span>
+    <span class="badge">🔧</span>
+    <span class="badge">🛠️</span>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <main class="page">
+      <div class="error-code" id="code404">404</div>
+      <div class="gear-wrap"><i class="fa-solid fa-gear"></i></div>
+      <h1 class="headline">Page Under Construction</h1>
+      <p class="subtext">
+        Oops! This page doesn't exist yet — we're still building it.
+        Check back soon, something awesome is on the way.
+      </p>
+
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-label">
+          <span>Building…</span><span id="pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <a href="/" class="btn-home" id="btn-home">
+        <i class="fas fa-house"></i> Back to Home
+      </a>
+    </main>
+
+    <script>
+      // ── Three.js background ──────────────────────────────────────────────
+      (function initThree() {
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          60, window.innerWidth / window.innerHeight, 0.1, 200
+        );
+        camera.position.z = 40;
+
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Particle field
+        const PARTICLE_SPREAD = 120;
+        const CAMERA_DAMPING  = 0.03;
+        const count = 250;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * PARTICLE_SPREAD;
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const mat = new THREE.PointsMaterial({
+          color: 0x6c63ff, size: 0.3, transparent: true, opacity: 0.7
+        });
+        const particles = new THREE.Points(geo, mat);
+        scene.add(particles);
+
+        // Wireframe icosahedron (construction vibe)
+        const icoGeo = new THREE.IcosahedronGeometry(10, 1);
+        const icoMat = new THREE.MeshBasicMaterial({
+          color: 0xff6584, wireframe: true, transparent: true, opacity: 0.06
+        });
+        const ico = new THREE.Mesh(icoGeo, icoMat);
+        ico.position.set(-20, 5, -15);
+        scene.add(ico);
+
+        // Wireframe torus
+        const torusGeo = new THREE.TorusGeometry(9, 2.5, 16, 60);
+        const torusMat = new THREE.MeshBasicMaterial({
+          color: 0x6c63ff, wireframe: true, transparent: true, opacity: 0.07
+        });
+        const torus = new THREE.Mesh(torusGeo, torusMat);
+        torus.position.set(22, -6, -12);
+        scene.add(torus);
+
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+          mouseX = (e.clientX / window.innerWidth - 0.5) * 5;
+          mouseY = -(e.clientY / window.innerHeight - 0.5) * 5;
+        });
+
+        function tick() {
+          requestAnimationFrame(tick);
+          particles.rotation.y += 0.0007;
+          particles.rotation.x += 0.0003;
+          ico.rotation.x += 0.004;
+          ico.rotation.y += 0.003;
+          torus.rotation.x += 0.003;
+          torus.rotation.y += 0.002;
+          camera.position.x += (mouseX - camera.position.x) * CAMERA_DAMPING;
+          camera.position.y += (mouseY - camera.position.y) * CAMERA_DAMPING;
+          renderer.render(scene, camera);
+        }
+        tick();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }());
+
+      // ── Progress bar fill (always runs, delay matches GSAP timing) ──────
+      setTimeout(() => {
+        const fill = document.getElementById('progress-fill');
+        const pct  = document.getElementById('pct');
+        fill.style.width = '67%';
+        let v = 0;
+        const iv = setInterval(() => {
+          v = Math.min(v + 1, 67);
+          pct.textContent = v + '%';
+          if (v === 67) clearInterval(iv);
+        }, 2000 / 67);
+      }, 1700);
+
+      // ── GSAP entrance animations ─────────────────────────────────────────
+      if (typeof gsap !== 'undefined') {
+        gsap.from('#code404',       { opacity: 0, y: -60, duration: 0.9, ease: 'power3.out', delay: 0.2 });
+        gsap.from('.gear-wrap',     { opacity: 0, scale: 0.3, duration: 0.6, ease: 'back.out(2)', delay: 0.8 });
+        gsap.from('.headline',      { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', delay: 1.1 });
+        gsap.from('.subtext',       { opacity: 0, y: 25, duration: 0.7, ease: 'power3.out', delay: 1.35 });
+        gsap.from('#progress-wrap', { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out', delay: 1.6 });
+        gsap.from('#btn-home',      { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out', delay: 1.85 });
+
+        // Gentle pulse on the gear
+        gsap.to('.gear-wrap', {
+          scale: 1.12,
+          duration: 1.2,
+          yoyo: true,
+          repeat: -1,
+          ease: 'sine.inOut',
+          delay: 1.4,
+        });
+      }
+    </script>
+  </body>
+</html>
