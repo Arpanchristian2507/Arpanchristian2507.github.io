@@ -13,12 +13,12 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <!-- THREE.js from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+<!-- THREE.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.180.0/three.webgpu.min.js"></script>
 
 <!-- GSAP from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollTrigger/1.0.6/ScrollTrigger.js"></script>
 
 <!-- Your main script -->
 <script src="script.js"></script>
@@ -308,15 +308,6 @@
       </div>
     </footer>
 
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "./node_modules/three/build/three.module.js",
-          "gsap": "./node_modules/gsap/index.js",
-          "gsap/ScrollTrigger": "./node_modules/gsap/ScrollTrigger.js"
-        }
-      }
-    </script>
     <script type="module" src="script.js"></script>
   </body>
 </html>
