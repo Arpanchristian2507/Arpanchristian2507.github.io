@@ -346,26 +346,26 @@ If you’re reading this, you’ve already noticed that something feels… inten
 
 This is a lightweight Capture The Flag (CTF) style puzzle designed for:
 
-Developers
+\u2022 Developers
 
-Security enthusiasts
+\u2022 Security enthusiasts
 
-Recruiters who like digging into systems
+\u2022 Recruiters who like digging into systems
 
-And anyone who enjoys solving problems
+\u2022 And anyone who enjoys solving problems
 
 Your mission is simple:
 
-Inspect carefully.
+\u2022 Inspect carefully.
 
-Decode thoughtfully.
+\u2022 Decode thoughtfully.
 
-Follow the breadcrumbs.
+\u2022 Follow the breadcrumbs.
 
 Somewhere within this site is a hidden path.
 If you reach the final stage, you’ll unlock:
 
-🏆 A digital badge
+🏆 A digital badge (Under Construction)
 or
 🚀 A hidden “Support the Development” page
 
