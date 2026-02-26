@@ -8,6 +8,10 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const navAnchors = navLinks.querySelectorAll('a');
+// HINT: The key is encoded in base64 somewhere on this page...
+console.log("%c🔐 Developer Challenge Activated", "color: #3b82f6; font-size: 16px;");
+console.log("Hint: The key is encoded in base64 somewhere on this page...");
+
 
 // Scroll: add 'scrolled' class to navbar
 window.addEventListener('scroll', () => {
@@ -193,6 +197,23 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
   });
 }());
 
+//DEVLOPER ACCESS ONLY:
+document.addEventListener("keydown", function (e) {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+    document.getElementById("dev-unlock").classList.add("active");
+  }
+});
+document.getElementById("unlock-btn").addEventListener("click", function () {
+  const input = document.getElementById("dev-key-input").value.trim();
+
+ const correctKey = atob("ZGV2LWNvZmZlZS1rZXk=");
+if (input === correctKey) {
+    window.location.href = "coffee.html";
+  } else {
+    document.getElementById("unlock-error").style.display = "block";
+  }
+});
+
 // ===========================
 // GSAP Animations
 // ===========================
@@ -312,3 +333,31 @@ contactForm.addEventListener('submit', (e) => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// const secretCode = [
+//   "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+//   "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
+//   "b","a"
+// ];
+
+// let userInput = [];
+
+// document.addEventListener("keydown", (e) => {
+//   userInput.push(e.key);
+
+//   if (userInput.length > secretCode.length) {
+//     userInput.shift();
+//   }
+
+//   if (JSON.stringify(userInput) === JSON.stringify(secretCode)) {
+//     activateCoffeeMode();
+//   }
+// });
+
+// function activateCoffeeMode() {
+//   const modal = document.getElementById("coffee-modal");
+//   modal.classList.add("active");
+// }
+
+// document.getElementById("close-coffee").addEventListener("click", () => {
+//   document.getElementById("coffee-modal").classList.remove("active");
+// });

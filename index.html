@@ -17,8 +17,8 @@
 <!-- THREE.js from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <!-- GSAP from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollTrigger/1.0.6/ScrollTrigger.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 
   <body>
     <!-- Navigation -->
@@ -247,6 +247,15 @@
         </div>
       </div>
     </section>
+<div id="dev-unlock" class="coffee-modal">
+  <div class="coffee-content">
+    <h2>🔐 Developer Access</h2>
+    <p>Enter the key to unlock.</p>
+    <input type="text" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text);" id="dev-key-input" placeholder="Enter key..." />
+    <button id="unlock-btn" class="btn btn-primary">Unlock</button>
+    <p id="unlock-error" style="color: red; display: none;">Incorrect key.</p>
+  </div>
+</div>
 
     <!-- Contact Section -->
     <section id="contact">
@@ -314,8 +323,7 @@
         </div>
       </div>
     </footer>
-    <!-- Your main script -->
 <script src="script.js" defer></script>
   </body>
-  
+                  <!-- ZGV2LWNvZmZlZS1rZXk= -->
 </html>

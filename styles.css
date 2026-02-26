@@ -823,3 +823,38 @@ footer p {
     text-align: center;
   }
 }
+.coffee-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 9999;
+}
+
+.coffee-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.coffee-content {
+  background: #111827;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  max-width: 400px;
+}
+
+.close-coffee {
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+}
