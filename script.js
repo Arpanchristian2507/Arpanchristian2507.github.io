@@ -208,6 +208,7 @@ document.getElementById("unlock-btn").addEventListener("click", function () {
 
  const correctKey = atob("ZGV2LWNvZmZlZS1rZXk=");
 if (input === correctKey) {
+    sessionStorage.setItem("devAccess", "true");
     window.location.href = "coffee.html";
   } else {
     document.getElementById("unlock-error").style.display = "block";
