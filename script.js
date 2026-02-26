@@ -209,7 +209,7 @@ document.getElementById("unlock-btn").addEventListener("click", function () {
  const correctKey = atob("ZGV2LWNvZmZlZS1rZXk=");
 if (input === correctKey) {
     sessionStorage.setItem("devAccess", "true");
-    window.location.href = "coffee.html";
+    window.location.href = "c0ff33.html";
   } else {
     document.getElementById("unlock-error").style.display = "block";
   }
