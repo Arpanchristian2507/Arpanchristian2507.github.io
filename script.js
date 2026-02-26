@@ -8,6 +8,10 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const navAnchors = navLinks.querySelectorAll('a');
+// HINT: The key is encoded in base64 somewhere on this page...
+console.log("%c🔐 Developer Challenge Activated", "color: #3b82f6; font-size: 16px;");
+console.log("Hint: The key is encoded in base64 somewhere on this page...");
+
 
 // Scroll: add 'scrolled' class to navbar
 window.addEventListener('scroll', () => {
@@ -193,6 +197,24 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
   });
 }());
 
+//DEVLOPER ACCESS ONLY:
+document.addEventListener("keydown", function (e) {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+    document.getElementById("dev-unlock").classList.add("active");
+  }
+});
+document.getElementById("unlock-btn").addEventListener("click", function () {
+  const input = document.getElementById("dev-key-input").value.trim();
+
+ const correctKey = atob("ZGV2LWNvZmZlZS1rZXk=");
+if (input === correctKey) {
+    sessionStorage.setItem("devAccess", "true");
+    window.location.href = "c0ff33.html";
+  } else {
+    document.getElementById("unlock-error").style.display = "block";
+  }
+});
+
 // ===========================
 // GSAP Animations
 // ===========================
@@ -312,3 +334,42 @@ contactForm.addEventListener('submit', (e) => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+const message = `🔐 Hidden Challenge – For the Curious Minds
+
+Some developers build projects.
+Others build systems.
+The curious ones look deeper.
+
+Welcome to a small embedded challenge inside my portfolio.
+
+If you’re reading this, you’ve already noticed that something feels… intentional.
+
+This is a lightweight Capture The Flag (CTF) style puzzle designed for:
+
+\u2022 Developers
+
+\u2022 Security enthusiasts
+
+\u2022 Recruiters who like digging into systems
+
+\u2022 And anyone who enjoys solving problems
+
+Your mission is simple:
+
+\u2022 Inspect carefully.
+
+\u2022 Decode thoughtfully.
+
+\u2022 Follow the breadcrumbs.
+
+Somewhere within this site is a hidden path.
+If you reach the final stage, you’ll unlock:
+
+🏆 A digital badge (Under Construction)
+or
+🚀 A hidden “Support the Development” page
+
+No brute force.
+No guessing.
+Just logic.`;
+console.log(message);
