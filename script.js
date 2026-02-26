@@ -334,31 +334,42 @@ contactForm.addEventListener('submit', (e) => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// const secretCode = [
-//   "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
-//   "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
-//   "b","a"
-// ];
+const message = `🔐 Hidden Challenge – For the Curious Minds
 
-// let userInput = [];
+Some developers build projects.
+Others build systems.
+The curious ones look deeper.
 
-// document.addEventListener("keydown", (e) => {
-//   userInput.push(e.key);
+Welcome to a small embedded challenge inside my portfolio.
 
-//   if (userInput.length > secretCode.length) {
-//     userInput.shift();
-//   }
+If you’re reading this, you’ve already noticed that something feels… intentional.
 
-//   if (JSON.stringify(userInput) === JSON.stringify(secretCode)) {
-//     activateCoffeeMode();
-//   }
-// });
+This is a lightweight Capture The Flag (CTF) style puzzle designed for:
 
-// function activateCoffeeMode() {
-//   const modal = document.getElementById("coffee-modal");
-//   modal.classList.add("active");
-// }
+Developers
 
-// document.getElementById("close-coffee").addEventListener("click", () => {
-//   document.getElementById("coffee-modal").classList.remove("active");
-// });
+Security enthusiasts
+
+Recruiters who like digging into systems
+
+And anyone who enjoys solving problems
+
+Your mission is simple:
+
+Inspect carefully.
+
+Decode thoughtfully.
+
+Follow the breadcrumbs.
+
+Somewhere within this site is a hidden path.
+If you reach the final stage, you’ll unlock:
+
+🏆 A digital badge
+or
+🚀 A hidden “Support the Development” page
+
+No brute force.
+No guessing.
+Just logic.`;
+console.log(message);
