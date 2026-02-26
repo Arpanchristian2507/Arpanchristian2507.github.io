@@ -138,11 +138,11 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
   const canvas = document.getElementById('hero-canvas');
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
-  camera.position.z = 40;
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.position.z = 30;
 
   // Particle field
   const count = 200;
@@ -170,6 +170,9 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
     mouseX = (e.clientX / window.innerWidth - 0.5) * 4;
     mouseY = -(e.clientY / window.innerHeight - 0.5) * 4;
   });
+  window.addEventListener("load", function () {
+    initThree();
+});
 
   function tick() {
     requestAnimationFrame(tick);
