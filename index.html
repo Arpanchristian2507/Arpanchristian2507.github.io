@@ -17,8 +17,8 @@
 <!-- THREE.js from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <!-- GSAP from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollTrigger/1.0.6/ScrollTrigger.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 
   <body>
     <!-- Navigation -->
@@ -247,6 +247,28 @@
         </div>
       </div>
     </section>
+<div id="dev-unlock" class="coffee-modal">
+  <div class="coffee-content">
+    <h2>🔐 Developer Access</h2>
+    <p id="stage-question" class="terminal-text">Stage 1: Decode the hidden console message.</p>
+
+    <input type="text" class="form-control" id="dev-key-input" placeholder="Enter answer..." />
+    <button id="unlock-btn" class="btn btn-primary">Submit</button>
+
+    <p id="unlock-error" style="color:red; display:none;"></p>
+  </div>
+</div>
+<div id="hardmode-section" style="display:none; margin-top:40px;">
+  <h2>🔐 Hard Mode Activated</h2>
+  <p id="hardmode-question">
+    Stage 4: What hash algorithm produces a 64 character hex string?
+  </p>
+
+  <input type="text" id="hardmode-input" placeholder="Enter answer..." />
+  <button id="hardmode-submit">Submit</button>
+
+  <p id="hardmode-error" style="color:red; display:none;"></p>
+</div>
 
     <!-- Contact Section -->
     <section id="contact">
@@ -312,10 +334,11 @@
           <a href="#projects">Projects</a>
           <a href="#contact">Contact</a>
         </div>
+      <p>There is more to this website than it looks! 
+        Open the console to inspect.</p>
       </div>
     </footer>
-    <!-- Your main script -->
 <script src="script.js" defer></script>
   </body>
-  
+                  <!-- ZGV2LWNvZmZlZS1rZXk= -->
 </html>

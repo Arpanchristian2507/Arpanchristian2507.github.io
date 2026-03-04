@@ -8,6 +8,10 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const navAnchors = navLinks.querySelectorAll('a');
+// HINT: The key is encoded in base64 somewhere on this page...
+console.log("%c🔐 Developer Challenge Activated", "color: #3b82f6; font-size: 16px;");
+console.log("Hint: The key is encoded in base64 somewhere on this page...");
+
 
 // Scroll: add 'scrolled' class to navbar
 window.addEventListener('scroll', () => {
@@ -193,6 +197,79 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
   });
 }());
 
+//DEVLOPER ACCESS ONLY:
+document.addEventListener("keydown", function (e) {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+    document.getElementById("dev-unlock").classList.add("active");
+    console.log("%c🔐 CTF Initialized", "color:#22c55e; font-size:16px;");
+    // console.log("U3RhZ2UxOiBXaGF0IGlzIDIgKyAyPw==");
+  }
+});
+document.addEventListener("DOMContentLoaded", function () {
+
+  let currentStage = 1;
+
+  const unlockBtn = document.getElementById("unlock-btn");
+  const inputEl = document.getElementById("dev-key-input");
+  const questionEl = document.getElementById("stage-question");
+  const errorEl = document.getElementById("unlock-error");
+
+  if (!unlockBtn) return;
+
+  unlockBtn.addEventListener("click", function () {
+
+    const input = inputEl.value.trim();
+
+    if (currentStage === 1) {
+
+      if (input === "4") {
+        currentStage = 2;
+        questionEl.innerText = "Stage 2: What is the length of 'ArpanChristian'?";
+        inputEl.value = "";
+        errorEl.style.display = "none";
+      } else {
+        showError();
+      }
+
+    } else if (currentStage === 2) {
+
+      if (input === "15") {
+        currentStage = 3;
+        questionEl.innerText = "Stage 3: What is 2^5 ?";
+        inputEl.value = "";
+        errorEl.style.display = "none";
+      } else {
+        showError();
+      }
+
+    } else if (currentStage === 3) {
+
+      if (input === "32") {
+        sessionStorage.setItem("devAccess", "true");
+        accessGranted();
+      } else {
+        showError();
+      }
+    }
+  });
+
+
+  function showError() {
+    errorEl.innerText = "Access Denied. Think like a developer.";
+    errorEl.style.display = "block";
+  }
+
+  function accessGranted() {
+    document.body.innerHTML =
+      "<h1 style='color:lime;text-align:center;margin-top:40vh;font-family:monospace;'>ACCESS GRANTED</h1>";
+
+    setTimeout(() => {
+      window.location.href = "c0ff33.html";
+    }, 1500);
+  }
+
+});
+
 // ===========================
 // GSAP Animations
 // ===========================
@@ -312,3 +389,42 @@ contactForm.addEventListener('submit', (e) => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+const message = `🔐 Hidden Challenge – For the Curious Minds
+
+Some developers build projects.
+Others build systems.
+The curious ones look deeper.
+
+Welcome to a small embedded challenge inside my portfolio.
+
+If you’re reading this, you’ve already noticed that something feels… intentional.
+
+This is a lightweight Capture The Flag (CTF) style puzzle designed for:
+
+\u2022 Developers
+
+\u2022 Security enthusiasts
+
+\u2022 Recruiters who like digging into systems
+
+\u2022 And anyone who enjoys solving problems
+
+Your mission is simple:
+
+\u2022 Inspect carefully.
+
+\u2022 Decode thoughtfully.
+
+\u2022 Follow the breadcrumbs.
+
+Somewhere within this site is a hidden path.
+If you reach the final stage, you’ll unlock:
+
+🏆 A digital badge (Under Construction)
+or
+🚀 A hidden “Support the Development” page
+
+No brute force.
+No guessing.
+Just logic.`;
+console.log(message);
