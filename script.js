@@ -388,3 +388,43 @@ contactForm.addEventListener('submit', (e) => {
 // ===========================
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
+const message = `🔐 Hidden Challenge – For the Curious Minds
+
+Some developers build projects.
+Others build systems.
+The curious ones look deeper.
+
+Welcome to a small embedded challenge inside my portfolio.
+
+If you’re reading this, you’ve already noticed that something feels… intentional.
+
+This is a lightweight Capture The Flag (CTF) style puzzle designed for:
+
+\u2022 Developers
+
+\u2022 Security enthusiasts
+
+\u2022 Recruiters who like digging into systems
+
+\u2022 And anyone who enjoys solving problems
+
+Your mission is simple:
+
+\u2022 Inspect carefully.
+
+\u2022 Decode thoughtfully.
+
+\u2022 Follow the breadcrumbs.
+
+Somewhere within this site is a hidden path.
+If you reach the final stage, you’ll unlock:
+
+🏆 A digital badge (Under Construction)
+or
+🚀 A hidden “Support the Development” page
+
+No brute force.
+No guessing.
+Just logic.`;
+console.log(message);
