@@ -201,18 +201,73 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
 document.addEventListener("keydown", function (e) {
   if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
     document.getElementById("dev-unlock").classList.add("active");
+    console.log("%c🔐 CTF Initialized", "color:#22c55e; font-size:16px;");
+    // console.log("U3RhZ2UxOiBXaGF0IGlzIDIgKyAyPw==");
   }
 });
-document.getElementById("unlock-btn").addEventListener("click", function () {
-  const input = document.getElementById("dev-key-input").value.trim();
+document.addEventListener("DOMContentLoaded", function () {
 
- const correctKey = atob("ZGV2LWNvZmZlZS1rZXk=");
-if (input === correctKey) {
-    sessionStorage.setItem("devAccess", "true");
-    window.location.href = "c0ff33.html";
-  } else {
-    document.getElementById("unlock-error").style.display = "block";
+  let currentStage = 1;
+
+  const unlockBtn = document.getElementById("unlock-btn");
+  const inputEl = document.getElementById("dev-key-input");
+  const questionEl = document.getElementById("stage-question");
+  const errorEl = document.getElementById("unlock-error");
+
+  if (!unlockBtn) return;
+
+  unlockBtn.addEventListener("click", function () {
+
+    const input = inputEl.value.trim();
+
+    if (currentStage === 1) {
+
+      if (input === "4") {
+        currentStage = 2;
+        questionEl.innerText = "Stage 2: What is the length of 'ArpanChristian'?";
+        inputEl.value = "";
+        errorEl.style.display = "none";
+      } else {
+        showError();
+      }
+
+    } else if (currentStage === 2) {
+
+      if (input === "15") {
+        currentStage = 3;
+        questionEl.innerText = "Stage 3: What is 2^5 ?";
+        inputEl.value = "";
+        errorEl.style.display = "none";
+      } else {
+        showError();
+      }
+
+    } else if (currentStage === 3) {
+
+      if (input === "32") {
+        sessionStorage.setItem("devAccess", "true");
+        accessGranted();
+      } else {
+        showError();
+      }
+    }
+  });
+
+
+  function showError() {
+    errorEl.innerText = "Access Denied. Think like a developer.";
+    errorEl.style.display = "block";
   }
+
+  function accessGranted() {
+    document.body.innerHTML =
+      "<h1 style='color:lime;text-align:center;margin-top:40vh;font-family:monospace;'>ACCESS GRANTED</h1>";
+
+    setTimeout(() => {
+      window.location.href = "c0ff33.html";
+    }, 1500);
+  }
+
 });
 
 // ===========================
@@ -333,32 +388,3 @@ contactForm.addEventListener('submit', (e) => {
 // ===========================
 
 document.getElementById('year').textContent = new Date().getFullYear();
-
-// const secretCode = [
-//   "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
-//   "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
-//   "b","a"
-// ];
-
-// let userInput = [];
-
-// document.addEventListener("keydown", (e) => {
-//   userInput.push(e.key);
-
-//   if (userInput.length > secretCode.length) {
-//     userInput.shift();
-//   }
-
-//   if (JSON.stringify(userInput) === JSON.stringify(secretCode)) {
-//     activateCoffeeMode();
-//   }
-// });
-
-// function activateCoffeeMode() {
-//   const modal = document.getElementById("coffee-modal");
-//   modal.classList.add("active");
-// }
-
-// document.getElementById("close-coffee").addEventListener("click", () => {
-//   document.getElementById("coffee-modal").classList.remove("active");
-// });

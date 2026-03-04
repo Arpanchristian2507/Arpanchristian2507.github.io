@@ -409,8 +409,23 @@
           rel="noopener noreferrer"
         >
           <span class="coffee-emoji">☕</span>
-          Buy Me a Coffee
+          Support the Developer
         </a>
+        <button id="hardmode-btn" class="coffee-btn" style="background: var(--green); color: #050a05;">
+    🧠 I Prefer Challenges
+      </button>
+      <div id="hardmode-section" style="display:none; margin-top:40px;">
+<h2>🔐 Hard Mode Activated</h2>
+  <p id="hardmode-question">
+    Stage 4: What hash algorithm produces a 64 character hex string?
+  </p>
+
+  <input type="text" id="hardmode-input" placeholder="Enter answer..." />
+  <button id="hardmode-submit" >Submit</button>
+
+  <p id="hardmode-error" style="color:red; display:none;"></p>
+
+</div>
 
         <p class="security-note">
           <i class="fas fa-lock"></i>
@@ -485,5 +500,61 @@
         setInterval(draw, 40);
       })();
     </script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const hardBtn = document.getElementById("hardmode-btn");
+    const section = document.getElementById("hardmode-section");
+    const submitBtn = document.getElementById("hardmode-submit");
+    const input = document.getElementById("hardmode-input");
+    const error = document.getElementById("hardmode-error");
+    const question = document.getElementById("hardmode-question");
+
+    if (!hardBtn) return;
+
+    let stage = 4;
+
+    hardBtn.addEventListener("click", function () {
+      section.style.display = "block";
+      hardBtn.style.display = "none";
+    });
+
+    submitBtn.addEventListener("click", function () {
+
+      const answer = input.value.trim().toLowerCase();
+
+      if (stage === 4) {
+        if (answer === "sha256") {
+          stage = 5;
+          question.innerText = "Stage 5: What is the base 2 representation of 13?";
+          input.value = "";
+          error.style.display = "none";
+        } else showHardError();
+      }
+
+      else if (stage === 5) {
+        if (answer === "1101") {
+          accessElite();
+        } else showHardError();
+      }
+
+    });
+
+    function showHardError() {
+      error.innerText = "Incorrect. Think deeper.";
+      error.style.display = "block";
+    }
+
+    function accessElite() {
+      document.body.innerHTML =
+        "<h1 style='color:#22c55e;text-align:center;margin-top:40vh;font-family:monospace;'>ELITE ACCESS GRANTED</h1>";
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+    }
+
+  });
+</script>
   </body>
 </html>

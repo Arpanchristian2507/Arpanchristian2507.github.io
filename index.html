@@ -250,11 +250,24 @@
 <div id="dev-unlock" class="coffee-modal">
   <div class="coffee-content">
     <h2>🔐 Developer Access</h2>
-    <p>Enter the key to unlock.</p>
-    <input type="text" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text);" id="dev-key-input" placeholder="Enter key..." />
-    <button id="unlock-btn" class="btn btn-primary">Unlock</button>
-    <p id="unlock-error" style="color: red; display: none;">Incorrect key.</p>
+    <p id="stage-question" class="terminal-text">Stage 1: Decode the hidden console message.</p>
+
+    <input type="text" class="form-control" id="dev-key-input" placeholder="Enter answer..." />
+    <button id="unlock-btn" class="btn btn-primary">Submit</button>
+
+    <p id="unlock-error" style="color:red; display:none;"></p>
   </div>
+</div>
+<div id="hardmode-section" style="display:none; margin-top:40px;">
+  <h2>🔐 Hard Mode Activated</h2>
+  <p id="hardmode-question">
+    Stage 4: What hash algorithm produces a 64 character hex string?
+  </p>
+
+  <input type="text" id="hardmode-input" placeholder="Enter answer..." />
+  <button id="hardmode-submit">Submit</button>
+
+  <p id="hardmode-error" style="color:red; display:none;"></p>
 </div>
 
     <!-- Contact Section -->
