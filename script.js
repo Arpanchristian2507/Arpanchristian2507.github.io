@@ -8,6 +8,10 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const navAnchors = navLinks.querySelectorAll('a');
+// HINT: The key is encoded in base64 somewhere on this page...
+console.log("%c🔐 Developer Challenge Activated", "color: #3b82f6; font-size: 16px;");
+console.log("Hint: The key is encoded in base64 somewhere on this page...");
+
 
 // Scroll: add 'scrolled' class to navbar
 window.addEventListener('scroll', () => {
@@ -193,6 +197,165 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
   });
 }());
 
+//DEVLOPER ACCESS ONLY:
+document.addEventListener("keydown", function (e) {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+    document.getElementById("dev-unlock").classList.add("active");
+    console.log("%c🔐 CTF Initialized", "color:#22c55e; font-size:16px;");
+    console.log("U3RhZ2UxOiBXaGF0IGlzIDIgKyAyPw==");
+  }
+});
+document.addEventListener("DOMContentLoaded", function () {
+
+  let currentStage = 1;
+
+  const unlockBtn = document.getElementById("unlock-btn");
+  const inputEl = document.getElementById("dev-key-input");
+  const questionEl = document.getElementById("stage-question");
+  const descEl = document.getElementById("stage-description");
+  const errorEl = document.getElementById("unlock-error");
+  const hintBtn = document.getElementById("hint-btn");
+  const hintText = document.getElementById("ctf-hint-text");
+
+  if (!unlockBtn) return;
+
+  const stages = [
+    {
+      question: "Stage 1 of 3: Decode the hidden console message.",
+      description: "Open DevTools (F12) → Console tab. You'll see a hint about a base64 key. Decode it to reveal a question, then answer that question here.",
+      hint: "The encoded message in the source decodes to a simple arithmetic question. Your answer is just a number.",
+      answer: "4",
+    },
+    {
+      question: "Stage 2 of 3: What is the character count of 'Arpan Christian' (with space)?",
+      description: "Count each individual character in the full name 'Arpan Christian' — including the space between first and last name.",
+      hint: "A-r-p-a-n = 5, [space] = 1, C-h-r-i-s-t-i-a-n = 9. Total?",
+      answer: "15",
+    },
+    {
+      question: "Stage 3 of 3: What is 2 raised to the power of 5?",
+      description: "A classic power-of-two calculation. Think binary: how many values can 5 bits represent?",
+      hint: "2^5 = 2 × 2 × 2 × 2 × 2. Count it on your fingers.",
+      answer: "32",
+    },
+  ];
+
+  function updateStageUI(stage) {
+    const s = stages[stage - 1];
+    questionEl.innerText = s.question;
+    if (descEl) descEl.innerText = s.description;
+    if (hintText) hintText.style.display = "none";
+    errorEl.style.display = "none";
+    inputEl.value = "";
+    inputEl.focus();
+
+    // Update progress pips
+    document.querySelectorAll(".ctf-stage-pip").forEach((pip) => {
+      const n = parseInt(pip.dataset.stage, 10);
+      pip.classList.remove("active", "done");
+      if (n < stage) {
+        pip.classList.add("done");
+        pip.textContent = "✔";
+      } else if (n === stage) {
+        pip.classList.add("active");
+        pip.textContent = n;
+      } else {
+        pip.textContent = n;
+      }
+    });
+    document.querySelectorAll(".ctf-stage-connector").forEach((conn, i) => {
+      conn.classList.toggle("done", i + 1 < stage);
+    });
+  }
+
+  updateStageUI(1);
+
+  if (hintBtn) {
+    hintBtn.addEventListener("click", function () {
+      if (!hintText) return;
+      const s = stages[currentStage - 1];
+      hintText.textContent = "💡 " + s.hint;
+      hintText.style.display = "block";
+    });
+  }
+
+  unlockBtn.addEventListener("click", function () {
+    const input = inputEl.value.trim();
+    const expected = stages[currentStage - 1].answer;
+
+    if (input.toLowerCase() === expected.toLowerCase()) {
+      if (currentStage < stages.length) {
+        currentStage++;
+        updateStageUI(currentStage);
+      } else {
+        sessionStorage.setItem("devAccess", "true");
+        accessGranted();
+      }
+    } else {
+      showError();
+    }
+  });
+
+  inputEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") unlockBtn.click();
+  });
+
+  function showError() {
+    errorEl.innerText = "❌ Access Denied. Think like a developer.";
+    errorEl.style.display = "block";
+  }
+
+  function accessGranted() {
+    document.body.innerHTML =
+      "<h1 style='color:lime;text-align:center;margin-top:40vh;font-family:monospace;'>ACCESS GRANTED</h1>";
+
+    setTimeout(() => {
+      window.location.href = "c0ff33.html";
+    }, 1500);
+  }
+
+  // ── Badge display (persisted in localStorage) ──
+  loadBadge();
+});
+
+function loadBadge() {
+  try {
+    const badge = JSON.parse(localStorage.getItem("ctfBadge") || "null");
+    if (badge && badge.earned) {
+      const btn = document.getElementById("badge-earned-btn");
+      if (btn) btn.style.display = "flex";
+      const dateEl = document.getElementById("badge-date");
+      if (dateEl && badge.earnedAt) {
+        dateEl.textContent = "Earned " + new Date(badge.earnedAt).toLocaleDateString();
+      }
+    }
+  } catch (e) { /* ignore */ }
+}
+
+// Open / close badge modal
+document.addEventListener("DOMContentLoaded", function () {
+  const badgeBtn = document.getElementById("badge-earned-btn");
+  const badgeModal = document.getElementById("badge-modal");
+  const badgeClose = document.getElementById("badge-modal-close");
+  const badgeOverlay = badgeModal && badgeModal.querySelector(".badge-modal-overlay");
+
+  if (badgeBtn && badgeModal) {
+    badgeBtn.addEventListener("click", function () {
+      badgeModal.classList.add("active");
+    });
+  }
+
+  function closeBadgeModal() {
+    if (badgeModal) badgeModal.classList.remove("active");
+  }
+
+  if (badgeClose) badgeClose.addEventListener("click", closeBadgeModal);
+  if (badgeOverlay) badgeOverlay.addEventListener("click", closeBadgeModal);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeBadgeModal();
+  });
+});
+
 // ===========================
 // GSAP Animations
 // ===========================
@@ -312,3 +475,42 @@ contactForm.addEventListener('submit', (e) => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+const message = `🔐 Hidden Challenge – For the Curious Minds
+
+Some developers build projects.
+Others build systems.
+The curious ones look deeper.
+
+Welcome to a small embedded challenge inside my portfolio.
+
+If you’re reading this, you’ve already noticed that something feels… intentional.
+
+This is a lightweight Capture The Flag (CTF) style puzzle designed for:
+
+\u2022 Developers
+
+\u2022 Security enthusiasts
+
+\u2022 Recruiters who like digging into systems
+
+\u2022 And anyone who enjoys solving problems
+
+Your mission is simple:
+
+\u2022 Inspect carefully.
+
+\u2022 Decode thoughtfully.
+
+\u2022 Follow the breadcrumbs.
+
+Somewhere within this site is a hidden path.
+If you reach the final stage, you’ll unlock:
+
+🏆 A digital badge (Under Construction)
+or
+🚀 A hidden “Support the Development” page
+
+No brute force.
+No guessing.
+Just logic.`;
+console.log(message);
