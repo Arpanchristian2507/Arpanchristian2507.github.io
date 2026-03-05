@@ -364,6 +364,138 @@
         .stats-row { gap: 0.7rem; }
         .stat-chip { min-width: 85px; padding: 0.6rem 0.9rem; }
       }
+
+      /* Hard-mode challenge UI */
+      #hardmode-section h2 {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        color: var(--green);
+        margin-bottom: .6rem;
+      }
+
+      .hm-desc {
+        font-size: .82rem;
+        color: var(--text-muted);
+        margin-bottom: .9rem;
+        line-height: 1.5;
+      }
+
+      .hm-stage-progress {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 1.2rem;
+      }
+
+      .hm-stage-pip {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(0,255,65,.06);
+        border: 2px solid rgba(0,255,65,.2);
+        color: var(--text-muted);
+        font-size: .78rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        transition: background .3s, border-color .3s, color .3s;
+        flex-shrink: 0;
+      }
+
+      .hm-stage-pip.active {
+        background: rgba(0,255,65,.15);
+        border-color: var(--green);
+        color: var(--green);
+        box-shadow: 0 0 8px rgba(0,255,65,.4);
+      }
+
+      .hm-stage-pip.done {
+        background: rgba(0,255,65,.15);
+        border-color: var(--green);
+        color: var(--green);
+      }
+
+      .hm-stage-connector {
+        height: 2px;
+        width: 40px;
+        background: rgba(0,255,65,.2);
+        flex-shrink: 0;
+        transition: background .3s;
+      }
+
+      .hm-stage-connector.done {
+        background: var(--green);
+      }
+
+      #hardmode-input {
+        width: 100%;
+        padding: .75rem 1rem;
+        background: rgba(0,255,65,.05);
+        border: 1px solid rgba(0,255,65,.25);
+        border-radius: 8px;
+        color: var(--green);
+        font-family: var(--font-mono);
+        font-size: .95rem;
+        outline: none;
+        margin-bottom: .8rem;
+        transition: border-color .3s, box-shadow .3s;
+      }
+
+      #hardmode-input:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px rgba(0,255,65,.1);
+      }
+
+      #hardmode-input::placeholder { color: var(--text-muted); }
+
+      .hm-btn-row {
+        display: flex;
+        gap: .75rem;
+        justify-content: center;
+        margin-bottom: .6rem;
+      }
+
+      #hardmode-submit {
+        background: var(--green);
+        color: #050a05;
+        border: none;
+        border-radius: 8px;
+        padding: .6rem 1.4rem;
+        font-weight: 700;
+        font-size: .9rem;
+        cursor: pointer;
+        transition: background .3s, transform .2s;
+      }
+
+      #hardmode-submit:hover { background: var(--green-dim); transform: translateY(-2px); }
+
+      .hm-hint-btn {
+        background: transparent;
+        border: 1px solid rgba(0,255,65,.3);
+        color: var(--text-muted);
+        border-radius: 8px;
+        padding: .6rem 1.1rem;
+        font-size: .85rem;
+        cursor: pointer;
+        transition: color .3s, border-color .3s;
+      }
+
+      .hm-hint-btn:hover { color: var(--green); border-color: var(--green); }
+
+      .hm-hint-text {
+        font-size: .8rem;
+        color: #fbbf24;
+        background: rgba(251,191,36,.08);
+        border: 1px solid rgba(251,191,36,.25);
+        border-radius: 6px;
+        padding: .5rem .8rem;
+        text-align: left;
+        line-height: 1.5;
+        margin-bottom: .5rem;
+      }
     </style>
   </head>
   <body>
@@ -415,17 +547,23 @@
     🧠 I Prefer Challenges
       </button>
       <div id="hardmode-section" style="display:none; margin-top:40px;">
-<h2>🔐 Hard Mode Activated</h2>
-  <p id="hardmode-question">
-    Stage 4: What hash algorithm produces a 64 character hex string?
-  </p>
+        <div class="hm-stage-progress">
+          <span class="hm-stage-pip active" data-stage="4">4</span>
+          <span class="hm-stage-connector"></span>
+          <span class="hm-stage-pip" data-stage="5">5</span>
+        </div>
+        <h2 id="hardmode-question">Stage 4 of 5: What hash algorithm produces a 64-character hex string?</h2>
+        <p id="hardmode-desc" class="hm-desc">This algorithm is the backbone of blockchain, TLS certificates, and password storage. It's part of the SHA-2 family.</p>
 
-  <input type="text" id="hardmode-input" placeholder="Enter answer..." />
-  <button id="hardmode-submit" >Submit</button>
+        <input type="text" id="hardmode-input" placeholder="Enter answer..." />
+        <div class="hm-btn-row">
+          <button id="hardmode-submit">Submit</button>
+          <button id="hardmode-hint-btn" class="hm-hint-btn">💡 Hint</button>
+        </div>
+        <p id="hardmode-hint-text" class="hm-hint-text" style="display:none;"></p>
 
-  <p id="hardmode-error" style="color:red; display:none;"></p>
-
-</div>
+        <p id="hardmode-error" style="color:red; display:none;"></p>
+      </div>
 
         <p class="security-note">
           <i class="fas fa-lock"></i>
@@ -509,49 +647,223 @@
     const input = document.getElementById("hardmode-input");
     const error = document.getElementById("hardmode-error");
     const question = document.getElementById("hardmode-question");
+    const desc = document.getElementById("hardmode-desc");
 
     if (!hardBtn) return;
 
     let stage = 4;
 
+    const stages = [
+      {
+        n: 4,
+        question: "Stage 4 of 5: What hash algorithm produces a 64-character hex string?",
+        description: "This algorithm is the backbone of blockchain, TLS certificates, and password storage. It's part of the SHA-2 family.",
+        hint: "Think: Secure Hash Algorithm, 256 bits → 64 hex characters.",
+        answer: "sha256",
+      },
+      {
+        n: 5,
+        question: "Stage 5 of 5: What is the decimal number 13 written in binary?",
+        description: "Convert the decimal number 13 to its binary (base-2) representation. No leading zeros.",
+        hint: "Position values: 8, 4, 2, 1. Which ones add up to 13?",
+        answer: "1101",
+      },
+    ];
+
+    function updateHardStage(s) {
+      const data = stages.find((x) => x.n === s);
+      if (!data) return;
+      question.innerText = data.question;
+      if (desc) desc.innerText = data.description;
+      if (document.getElementById("hardmode-hint-text"))
+        document.getElementById("hardmode-hint-text").style.display = "none";
+      error.style.display = "none";
+      input.value = "";
+      input.focus();
+
+      // Update hard-mode pip progress
+      document.querySelectorAll(".hm-stage-pip").forEach((pip) => {
+        const n = parseInt(pip.dataset.stage, 10);
+        pip.classList.remove("active", "done");
+        if (n < s) {
+          pip.classList.add("done");
+          pip.textContent = "✔";
+        } else if (n === s) {
+          pip.classList.add("active");
+          pip.textContent = n;
+        } else {
+          pip.textContent = n;
+        }
+      });
+      document.querySelectorAll(".hm-stage-connector").forEach((conn, i) => {
+        conn.classList.toggle("done", i + 4 < s);
+      });
+    }
+
     hardBtn.addEventListener("click", function () {
       section.style.display = "block";
       hardBtn.style.display = "none";
+      updateHardStage(4);
+    });
+
+    document.getElementById("hardmode-hint-btn").addEventListener("click", function () {
+      const hintEl = document.getElementById("hardmode-hint-text");
+      const data = stages.find((x) => x.n === stage);
+      if (hintEl && data) {
+        hintEl.textContent = "💡 " + data.hint;
+        hintEl.style.display = "block";
+      }
+    });
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") submitBtn.click();
     });
 
     submitBtn.addEventListener("click", function () {
-
       const answer = input.value.trim().toLowerCase();
+      const data = stages.find((x) => x.n === stage);
 
-      if (stage === 4) {
-        if (answer === "sha256") {
+      if (!data) return;
+
+      if (answer === data.answer) {
+        if (stage < 5) {
           stage = 5;
-          question.innerText = "Stage 5: What is the base 2 representation of 13?";
-          input.value = "";
-          error.style.display = "none";
-        } else showHardError();
-      }
-
-      else if (stage === 5) {
-        if (answer === "1101") {
+          updateHardStage(5);
+        } else {
           accessElite();
-        } else showHardError();
+        }
+      } else {
+        showHardError();
       }
-
     });
 
     function showHardError() {
-      error.innerText = "Incorrect. Think deeper.";
+      error.innerText = "❌ Incorrect. Think deeper.";
       error.style.display = "block";
     }
 
     function accessElite() {
-      document.body.innerHTML =
-        "<h1 style='color:#22c55e;text-align:center;margin-top:40vh;font-family:monospace;'>ELITE ACCESS GRANTED</h1>";
+      // Save badge to localStorage
+      const badgeData = {
+        earned: true,
+        earnedAt: new Date().toISOString(),
+        title: "CTF Champion",
+        stages: 5,
+      };
+      try {
+        localStorage.setItem("ctfBadge", JSON.stringify(badgeData));
+      } catch (e) { /* ignore storage errors */ }
 
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
+      const dateStr = new Date(badgeData.earnedAt).toLocaleDateString(undefined, {
+        year: "numeric", month: "long", day: "numeric",
+      });
+
+      // Replace page content (no inline <script> — scripts are added separately)
+      document.body.innerHTML = getBadgeBodyHTML(dateStr);
+      launchConfetti();
+    }
+
+    function getBadgeBodyHTML(dateStr) {
+      return `
+        <style>
+          *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+          body{background:#050a05;color:#c8ffc8;font-family:'Segoe UI',system-ui,sans-serif;
+            min-height:100vh;display:flex;flex-direction:column;align-items:center;
+            justify-content:center;padding:2rem;text-align:center;overflow:hidden;}
+          .confetti-area{position:fixed;inset:0;pointer-events:none;overflow:hidden;}
+          .badge-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1.5rem;}
+          .badge-outer{width:280px;height:280px;border-radius:50%;
+            background:conic-gradient(#fbbf24 0deg,#f59e0b 60deg,#fcd34d 120deg,#f59e0b 180deg,#fbbf24 240deg,#fcd34d 300deg,#fbbf24 360deg);
+            padding:6px;animation:rot 10s linear infinite;
+            box-shadow:0 0 50px rgba(251,191,36,.55),0 0 100px rgba(251,191,36,.2);}
+          @keyframes rot{to{transform:rotate(360deg)}}
+          .badge-inner{width:100%;height:100%;border-radius:50%;
+            background:radial-gradient(circle at 40% 35%,#1e1200,#050800);
+            border:3px solid #92400e;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:.3rem;
+            animation:rot 10s linear infinite reverse;padding:1rem;}
+          .badge-trophy{font-size:3rem;line-height:1;filter:drop-shadow(0 0 10px rgba(251,191,36,.8));}
+          .badge-title{font-family:'Courier New',monospace;font-size:.7rem;font-weight:700;
+            letter-spacing:3px;color:#fbbf24;text-transform:uppercase;
+            text-shadow:0 0 10px rgba(251,191,36,.6);}
+          .badge-sub{font-size:1.1rem;font-weight:800;color:#fef3c7;}
+          .badge-dots{display:flex;gap:.35rem;margin:.3rem 0;}
+          .badge-dot{width:22px;height:22px;border-radius:50%;
+            background:rgba(34,197,94,.2);border:1.5px solid #22c55e;
+            color:#22c55e;font-size:.65rem;display:flex;align-items:center;
+            justify-content:center;font-weight:700;}
+          .badge-lbl{font-size:.65rem;color:#92400e;text-transform:uppercase;
+            letter-spacing:.5px;font-family:'Courier New',monospace;}
+          .badge-brand{font-family:'Courier New',monospace;font-size:.6rem;
+            color:#78350f;text-transform:uppercase;letter-spacing:2px;}
+          .badge-date{font-family:'Courier New',monospace;font-size:.58rem;color:#78350f;}
+          .badge-glow{position:absolute;inset:-15px;border-radius:50%;
+            background:radial-gradient(circle,rgba(251,191,36,.18) 0%,transparent 70%);
+            pointer-events:none;animation:glow 2s ease-in-out infinite;}
+          @keyframes glow{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+          h1{font-family:'Courier New',monospace;font-size:clamp(1.4rem,5vw,2rem);
+            color:#fff;margin-bottom:.5rem;text-shadow:0 0 16px rgba(251,191,36,.4);}
+          .sub{color:#5a8a5a;font-family:'Courier New',monospace;font-size:.85rem;margin-bottom:1.8rem;}
+          .note{font-size:.8rem;color:#374151;margin-bottom:1.6rem;max-width:340px;}
+          .btn-row{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+          .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;
+            border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;
+            text-decoration:none;border:2px solid transparent;transition:.3s ease;}
+          .btn-green{background:#22c55e;color:#050a05;}
+          .btn-green:hover{background:#16a34a;transform:translateY(-2px);}
+          .btn-outline{background:transparent;border-color:rgba(0,255,65,.4);color:#00ff41;}
+          .btn-outline:hover{background:rgba(0,255,65,.08);transform:translateY(-2px);}
+          @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+        </style>
+        <div class="confetti-area" id="confetti-area"></div>
+        <div class="badge-wrap">
+          <div class="badge-outer">
+            <div class="badge-inner">
+              <div class="badge-trophy">🏆</div>
+              <div class="badge-title">CTF CHAMPION</div>
+              <div class="badge-sub">Code Breaker</div>
+              <div class="badge-dots">
+                <div class="badge-dot">✔</div>
+                <div class="badge-dot">✔</div>
+                <div class="badge-dot">✔</div>
+                <div class="badge-dot">✔</div>
+                <div class="badge-dot">✔</div>
+              </div>
+              <div class="badge-lbl">5 / 5 Stages Completed</div>
+              <div class="badge-brand">Arpan's Portfolio</div>
+              <div class="badge-date">Earned ${dateStr}</div>
+            </div>
+          </div>
+          <div class="badge-glow"></div>
+        </div>
+        <h1>🎉 Elite Access Granted</h1>
+        <p class="sub">$ status: ELITE_DEVELOPER_CONFIRMED</p>
+        <p class="note">You've conquered all 5 stages of the CTF challenge.<br>
+          Your badge is permanently saved in your browser — revisit the portfolio anytime to show it off.</p>
+        <div class="btn-row">
+          <a href="index.html" class="btn btn-green">🏅 View My Badge on Portfolio</a>
+          <a href="https://www.buymeacoffee.com/christianarpan" target="_blank" rel="noopener noreferrer" class="btn btn-outline">☕ Buy Me a Coffee</a>
+        </div>
+      `;
+    }
+
+    function launchConfetti() {
+      var area = document.getElementById("confetti-area");
+      if (!area) return;
+      var colors = ["#fbbf24", "#22c55e", "#60a5fa", "#f472b6", "#a78bfa"];
+      for (var i = 0; i < 80; i++) {
+        var el = document.createElement("div");
+        var size = Math.random() * 8 + 4;
+        el.style.cssText =
+          "position:absolute;border-radius:2px;" +
+          "width:" + size + "px;height:" + size + "px;" +
+          "background:" + colors[Math.floor(Math.random() * colors.length)] + ";" +
+          "left:" + Math.random() * 100 + "%;top:-10px;" +
+          "animation:fall " + (Math.random() * 3 + 2) + "s linear " + Math.random() * 2 + "s forwards;" +
+          "opacity:" + (Math.random() * 0.7 + 0.3) + ";" +
+          "transform:rotate(" + Math.random() * 360 + "deg);";
+        area.appendChild(el);
+      }
     }
 
   });
