@@ -212,50 +212,96 @@ document.addEventListener("DOMContentLoaded", function () {
   const unlockBtn = document.getElementById("unlock-btn");
   const inputEl = document.getElementById("dev-key-input");
   const questionEl = document.getElementById("stage-question");
+  const descEl = document.getElementById("stage-description");
   const errorEl = document.getElementById("unlock-error");
+  const hintBtn = document.getElementById("hint-btn");
+  const hintText = document.getElementById("ctf-hint-text");
 
   if (!unlockBtn) return;
 
+  const stages = [
+    {
+      question: "Stage 1 of 3: Decode the hidden console message.",
+      description: "Open DevTools (F12) → Console tab. You'll see a hint about a base64 key. Decode it to reveal a question, then answer that question here.",
+      hint: "The encoded message in the source decodes to a simple arithmetic question. Your answer is just a number.",
+      answer: "4",
+    },
+    {
+      question: "Stage 2 of 3: What is the character count of 'Arpan Christian' (with space)?",
+      description: "Count each individual character in the full name 'Arpan Christian' — including the space between first and last name.",
+      hint: "A-r-p-a-n = 5, [space] = 1, C-h-r-i-s-t-i-a-n = 9. Total?",
+      answer: "15",
+    },
+    {
+      question: "Stage 3 of 3: What is 2 raised to the power of 5?",
+      description: "A classic power-of-two calculation. Think binary: how many values can 5 bits represent?",
+      hint: "2^5 = 2 × 2 × 2 × 2 × 2. Count it on your fingers.",
+      answer: "32",
+    },
+  ];
+
+  function updateStageUI(stage) {
+    const s = stages[stage - 1];
+    questionEl.innerText = s.question;
+    if (descEl) descEl.innerText = s.description;
+    if (hintText) hintText.style.display = "none";
+    errorEl.style.display = "none";
+    inputEl.value = "";
+    inputEl.focus();
+
+    // Update progress pips
+    document.querySelectorAll(".ctf-stage-pip").forEach((pip) => {
+      const n = parseInt(pip.dataset.stage, 10);
+      pip.classList.remove("active", "done");
+      if (n < stage) {
+        pip.classList.add("done");
+        pip.textContent = "✔";
+      } else if (n === stage) {
+        pip.classList.add("active");
+        pip.textContent = n;
+      } else {
+        pip.textContent = n;
+      }
+    });
+    document.querySelectorAll(".ctf-stage-connector").forEach((conn, i) => {
+      conn.classList.toggle("done", i + 1 < stage);
+    });
+  }
+
+  updateStageUI(1);
+
+  if (hintBtn) {
+    hintBtn.addEventListener("click", function () {
+      if (!hintText) return;
+      const s = stages[currentStage - 1];
+      hintText.textContent = "💡 " + s.hint;
+      hintText.style.display = "block";
+    });
+  }
+
   unlockBtn.addEventListener("click", function () {
-
     const input = inputEl.value.trim();
+    const expected = stages[currentStage - 1].answer;
 
-    if (currentStage === 1) {
-
-      if (input === "4") {
-        currentStage = 2;
-        questionEl.innerText = "Stage 2: What is the length of 'ArpanChristian'?";
-        inputEl.value = "";
-        errorEl.style.display = "none";
+    if (input.toLowerCase() === expected.toLowerCase()) {
+      if (currentStage < stages.length) {
+        currentStage++;
+        updateStageUI(currentStage);
       } else {
-        showError();
-      }
-
-    } else if (currentStage === 2) {
-
-      if (input === "15") {
-        currentStage = 3;
-        questionEl.innerText = "Stage 3: What is 2^5 ?";
-        inputEl.value = "";
-        errorEl.style.display = "none";
-      } else {
-        showError();
-      }
-
-    } else if (currentStage === 3) {
-
-      if (input === "32") {
         sessionStorage.setItem("devAccess", "true");
         accessGranted();
-      } else {
-        showError();
       }
+    } else {
+      showError();
     }
   });
 
+  inputEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") unlockBtn.click();
+  });
 
   function showError() {
-    errorEl.innerText = "Access Denied. Think like a developer.";
+    errorEl.innerText = "❌ Access Denied. Think like a developer.";
     errorEl.style.display = "block";
   }
 
@@ -268,6 +314,46 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1500);
   }
 
+  // ── Badge display (persisted in localStorage) ──
+  loadBadge();
+});
+
+function loadBadge() {
+  try {
+    const badge = JSON.parse(localStorage.getItem("ctfBadge") || "null");
+    if (badge && badge.earned) {
+      const btn = document.getElementById("badge-earned-btn");
+      if (btn) btn.style.display = "flex";
+      const dateEl = document.getElementById("badge-date");
+      if (dateEl && badge.earnedAt) {
+        dateEl.textContent = "Earned " + new Date(badge.earnedAt).toLocaleDateString();
+      }
+    }
+  } catch (e) { /* ignore */ }
+}
+
+// Open / close badge modal
+document.addEventListener("DOMContentLoaded", function () {
+  const badgeBtn = document.getElementById("badge-earned-btn");
+  const badgeModal = document.getElementById("badge-modal");
+  const badgeClose = document.getElementById("badge-modal-close");
+  const badgeOverlay = badgeModal && badgeModal.querySelector(".badge-modal-overlay");
+
+  if (badgeBtn && badgeModal) {
+    badgeBtn.addEventListener("click", function () {
+      badgeModal.classList.add("active");
+    });
+  }
+
+  function closeBadgeModal() {
+    if (badgeModal) badgeModal.classList.remove("active");
+  }
+
+  if (badgeClose) badgeClose.addEventListener("click", closeBadgeModal);
+  if (badgeOverlay) badgeOverlay.addEventListener("click", closeBadgeModal);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeBadgeModal();
+  });
 });
 
 // ===========================

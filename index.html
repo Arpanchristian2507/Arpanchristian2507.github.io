@@ -250,11 +250,22 @@
 <div id="dev-unlock" class="coffee-modal">
   <div class="coffee-content">
     <h2>🔐 Developer Access</h2>
+    <div class="ctf-stage-progress" id="ctf-stage-progress">
+      <span class="ctf-stage-pip active" data-stage="1">1</span>
+      <span class="ctf-stage-connector"></span>
+      <span class="ctf-stage-pip" data-stage="2">2</span>
+      <span class="ctf-stage-connector"></span>
+      <span class="ctf-stage-pip" data-stage="3">3</span>
+    </div>
     <p id="stage-question" class="terminal-text">Stage 1: Decode the hidden console message.</p>
+    <p id="stage-description" class="ctf-stage-desc">Open DevTools (F12) → Console tab. You'll see a hint about a base64 key. Decode it to reveal the question, then answer that question.</p>
 
     <input type="text" class="form-control" id="dev-key-input" placeholder="Enter answer..." />
-    <button id="unlock-btn" class="btn btn-primary">Submit</button>
-
+    <div class="ctf-btn-row">
+      <button id="unlock-btn" class="btn btn-primary">Submit</button>
+      <button id="hint-btn" class="btn btn-outline ctf-hint-btn" type="button">💡 Hint</button>
+    </div>
+    <p id="ctf-hint-text" class="ctf-hint-text" style="display:none"></p>
     <p id="unlock-error" style="color:red; display:none;"></p>
   </div>
 </div>
@@ -323,6 +334,41 @@
         </div>
       </div>
     </section>
+
+    <!-- Badge Earned Button (shown when badge is in localStorage) -->
+    <button id="badge-earned-btn" class="badge-earned-btn" aria-label="View your earned badge" style="display:none">
+      <span class="badge-earned-icon">🏆</span>
+      <span>Your Badge</span>
+    </button>
+
+    <!-- Badge Modal -->
+    <div id="badge-modal" class="badge-modal" role="dialog" aria-modal="true" aria-label="Achievement Badge">
+      <div class="badge-modal-overlay"></div>
+      <div class="badge-modal-content">
+        <button class="badge-modal-close" id="badge-modal-close" aria-label="Close badge">&times;</button>
+        <div class="achievement-badge">
+          <div class="badge-outer-ring">
+            <div class="badge-inner">
+              <div class="badge-trophy">🏆</div>
+              <div class="badge-title">CTF CHAMPION</div>
+              <div class="badge-subtitle">Code Breaker</div>
+              <div class="badge-stages">
+                <span class="badge-stage-dot">✔</span>
+                <span class="badge-stage-dot">✔</span>
+                <span class="badge-stage-dot">✔</span>
+                <span class="badge-stage-dot">✔</span>
+                <span class="badge-stage-dot">✔</span>
+              </div>
+              <div class="badge-label">5 / 5 Stages Completed</div>
+              <div class="badge-brand">Arpan's Portfolio</div>
+              <div class="badge-date" id="badge-date"></div>
+            </div>
+          </div>
+          <div class="badge-glow"></div>
+        </div>
+        <p class="badge-persist-note">This badge is permanently saved in your browser. 🔐</p>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer>
