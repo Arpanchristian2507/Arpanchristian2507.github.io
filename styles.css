@@ -523,7 +523,7 @@ ul {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  min-width: 80px;
+  min-width: 96px;
   transition: transform var(--transition), border-color var(--transition);
 }
 
@@ -533,7 +533,8 @@ ul {
 }
 
 .tech-icon i {
-  font-size: 2rem;
+  font-size: clamp(2.2rem, 4vw, 2.6rem);
+  line-height: 1;
   color: var(--color-primary);
 }
 

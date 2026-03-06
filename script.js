@@ -202,7 +202,7 @@ document.addEventListener("keydown", function (e) {
   if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
     document.getElementById("dev-unlock").classList.add("active");
     console.log("%c🔐 CTF Initialized", "color:#22c55e; font-size:16px;");
-    // console.log("U3RhZ2UxOiBXaGF0IGlzIDIgKyAyPw==");
+    console.log("U3RhZ2UxOiBXaGF0IGlzIDIgKyAyPw==");
   }
 });
 document.addEventListener("DOMContentLoaded", function () {
