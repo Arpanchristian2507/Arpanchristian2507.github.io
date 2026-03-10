@@ -224,21 +224,26 @@ document.addEventListener("DOMContentLoaded", function () {
       question: "Stage 1 of 3: Decode the hidden console message.",
       description: "Open DevTools (F12) → Console tab. You'll see a hint about a base64 key. Decode it to reveal a question, then answer that question here.",
       hint: "The encoded message in the source decodes to a simple arithmetic question. Your answer is just a number.",
-      answer: "4",
+      answer: "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
     },
     {
       question: "Stage 2 of 3: What is the character count of 'Arpan Christian' (with space)?",
       description: "Count each individual character in the full name 'Arpan Christian' — including the space between first and last name.",
       hint: "A-r-p-a-n = 5, [space] = 1, C-h-r-i-s-t-i-a-n = 9. Total?",
-      answer: "15",
+      answer: "e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb",
     },
     {
       question: "Stage 3 of 3: What is 2 raised to the power of 5?",
       description: "A classic power-of-two calculation. Think binary: how many values can 5 bits represent?",
       hint: "2^5 = 2 × 2 × 2 × 2 × 2. Count it on your fingers.",
-      answer: "32",
+      answer: "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
     },
   ];
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
 
   function updateStageUI(stage) {
     const s = stages[stage - 1];
@@ -279,11 +284,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  unlockBtn.addEventListener("click", function () {
+  unlockBtn.addEventListener("click", async function () {
     const input = inputEl.value.trim();
     const expected = stages[currentStage - 1].answer;
+    let hashed;
+    try {
+      hashed = await sha256(input.toLowerCase());
+    } catch (e) {
+      showError();
+      return;
+    }
 
-    if (input.toLowerCase() === expected.toLowerCase()) {
+    if (hashed === expected) {
       if (currentStage < stages.length) {
         currentStage++;
         updateStageUI(currentStage);

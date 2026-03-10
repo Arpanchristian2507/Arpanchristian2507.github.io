@@ -659,16 +659,21 @@
         question: "Stage 4 of 5: What hash algorithm produces a 64-character hex string?",
         description: "This algorithm is the backbone of blockchain, TLS certificates, and password storage. It's part of the SHA-2 family.",
         hint: "Think: Secure Hash Algorithm, 256 bits → 64 hex characters.",
-        answer: "sha256",
+        answer: "5d5b09f6dcb2d53a5fffc60c4ac0d55fabdf556069d6631545f42aa6e3500f2e",
       },
       {
         n: 5,
         question: "Stage 5 of 5: What is the decimal number 13 written in binary?",
         description: "Convert the decimal number 13 to its binary (base-2) representation. No leading zeros.",
         hint: "Position values: 8, 4, 2, 1. Which ones add up to 13?",
-        answer: "1101",
+        answer: "36ab771eba23f49d7ae43af88c601f3de8fccb201250906a4085444ae765f2db",
       },
     ];
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
 
     function updateHardStage(s) {
       const data = stages.find((x) => x.n === s);
@@ -719,13 +724,20 @@
       if (e.key === "Enter") submitBtn.click();
     });
 
-    submitBtn.addEventListener("click", function () {
+    submitBtn.addEventListener("click", async function () {
       const answer = input.value.trim().toLowerCase();
       const data = stages.find((x) => x.n === stage);
 
       if (!data) return;
 
-      if (answer === data.answer) {
+      let hashed;
+      try {
+        hashed = await sha256(answer);
+      } catch (e) {
+        showHardError();
+        return;
+      }
+      if (hashed === data.answer) {
         if (stage < 5) {
           stage = 5;
           updateHardStage(5);
