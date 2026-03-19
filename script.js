@@ -11,6 +11,7 @@ const navAnchors = navLinks.querySelectorAll('a');
 // HINT: The key is encoded in base64 somewhere on this page...
 console.log("%c🔐 Developer Challenge Activated", "color: #3b82f6; font-size: 16px;");
 console.log("Hint: The key is encoded in base64 somewhere on this page...");
+console.log("Tip: Press Ctrl+Shift+D (Windows/Linux) or \u2318+Shift+D (Mac) to open the challenge.");
 
 
 // Scroll: add 'scrolled' class to navbar
@@ -199,7 +200,7 @@ document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.
 
 //DEVLOPER ACCESS ONLY:
 document.addEventListener("keydown", function (e) {
-  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "d") {
     document.getElementById("dev-unlock").classList.add("active");
     console.log("%c🔐 CTF Initialized", "color:#22c55e; font-size:16px;");
     console.log("U3RhZ2UxOiBXaGF0IGlzIDIgKyAyPw==");
@@ -222,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const stages = [
     {
       question: "Stage 1 of 3: Decode the hidden console message.",
-      description: "Open DevTools (F12) → Console tab. You'll see a hint about a base64 key. Decode it to reveal a question, then answer that question here.",
+      description: "Open DevTools (F12 on Windows/Linux, ⌘+Option+J on Mac) → Console tab. You'll see a hint about a base64 key. Decode it to reveal a question, then answer that question here.",
       hint: "The encoded message in the source decodes to a simple arithmetic question. Your answer is just a number.",
       answer: "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
     },
@@ -486,6 +487,80 @@ contactForm.addEventListener('submit', (e) => {
 // ===========================
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// ===========================
+// Button Hover Previews
+// ===========================
+
+(function initHoverPreviews() {
+  const previewEl = document.createElement('div');
+  previewEl.id = 'btn-hover-preview';
+  previewEl.setAttribute('role', 'tooltip');
+  previewEl.setAttribute('aria-live', 'polite');
+  document.body.appendChild(previewEl);
+
+  const previews = {
+    '#projects': {
+      title: '💻 Projects',
+      items: ['Portfolio Website — HTML, CSS, JS', 'UI Design System — CSS, Design', 'VoiceBridge — Kotlin, Android'],
+    },
+    '#contact': {
+      title: '✉️ Contact',
+      items: ['arpanchristian2507@gmail.com', 'Winnipeg, MB', 'github.com/Arpanchristian2507'],
+    },
+    '/Resume.pdf': {
+      title: '📄 Resume / CV',
+      items: ['Opens the PDF resume', 'Arpan Christian — Web Developer', 'Skills · Projects · Experience'],
+    },
+    '#about': {
+      title: '👤 About Me',
+      items: ['Passionate web developer', '3 Years Experience', '10+ Projects Completed'],
+    },
+  };
+
+  let hideTimeout;
+
+  function showPreview(btn, href) {
+    const data = previews[href];
+    if (!data) return;
+    clearTimeout(hideTimeout);
+
+    previewEl.innerHTML =
+      '<div class="bhp-title">' + data.title + '</div>' +
+      '<ul class="bhp-list">' +
+      data.items.map(function (i) { return '<li>' + i + '</li>'; }).join('') +
+      '</ul>';
+
+    // Use offsetWidth/offsetHeight with safe fallbacks for initial render
+    const pw = previewEl.offsetWidth || 220;
+    const ph = previewEl.offsetHeight || 90;
+    const rect = btn.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - pw / 2 + window.scrollX;
+    // Keep within viewport
+    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+    const top = rect.top + window.scrollY - ph - 12;
+
+    previewEl.style.left = left + 'px';
+    previewEl.style.top = top + 'px';
+    previewEl.classList.add('bhp-visible');
+  }
+
+  function hidePreview() {
+    hideTimeout = setTimeout(function () {
+      previewEl.classList.remove('bhp-visible');
+    }, 120);
+  }
+
+  document.querySelectorAll('.btn[href]').forEach(function (btn) {
+    const href = btn.getAttribute('href');
+    if (!previews[href]) return;
+
+    btn.addEventListener('mouseenter', function () { showPreview(btn, href); });
+    btn.addEventListener('mouseleave', hidePreview);
+    btn.addEventListener('focus', function () { showPreview(btn, href); });
+    btn.addEventListener('blur', hidePreview);
+  });
+}());
 
 const message = `🔐 Hidden Challenge – For the Curious Minds
 
