@@ -518,7 +518,7 @@ Your mission is simple:
 Somewhere within this site is a hidden path.
 If you reach the final stage, you’ll unlock:
 
-🏆 A digital badge (Under Construction)
+🏆 A digital badge
 or
 🚀 A hidden “Support the Development” page
 
