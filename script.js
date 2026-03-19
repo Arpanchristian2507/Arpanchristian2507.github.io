@@ -562,6 +562,107 @@ document.getElementById('year').textContent = new Date().getFullYear();
   });
 }());
 
+// ===========================
+// Project Screen Previews
+// ===========================
+
+(function initProjectScreenPreviews() {
+  // Build the preview popup (mini browser window)
+  const previewEl = document.createElement('div');
+  previewEl.id = 'project-screen-preview';
+  previewEl.setAttribute('role', 'tooltip');
+  previewEl.setAttribute('aria-live', 'polite');
+  previewEl.innerHTML =
+    '<div class="psp-browser-bar">' +
+      '<span class="psp-dots"><span></span><span></span><span></span></span>' +
+      '<span class="psp-url"></span>' +
+    '</div>' +
+    '<div class="psp-screen">' +
+      '<img class="psp-img" alt="Page preview" />' +
+      '<span class="psp-loading">Loading preview\u2026</span>' +
+    '</div>';
+  document.body.appendChild(previewEl);
+
+  var urlEl = previewEl.querySelector('.psp-url');
+  var imgEl = previewEl.querySelector('.psp-img');
+  var loadingEl = previewEl.querySelector('.psp-loading');
+
+  var hideTimeout;
+  var currentHref = null;
+
+  function getScreenshotUrl(pageUrl) {
+    return 'https://image.thum.io/get/width/560/crop/320/' + encodeURIComponent(pageUrl);
+  }
+
+  function positionPreview(btn) {
+    // Measure after content is set so height is correct
+    var pw = previewEl.offsetWidth || 280;
+    var ph = previewEl.offsetHeight || 200;
+    var rect = btn.getBoundingClientRect();
+    var left = rect.left + rect.width / 2 - pw / 2 + window.scrollX;
+    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+    // Prefer above; fall back to below if not enough room
+    var top = rect.top + window.scrollY - ph - 12;
+    if (top < window.scrollY + 8) {
+      top = rect.bottom + window.scrollY + 8;
+    }
+    previewEl.style.left = left + 'px';
+    previewEl.style.top = top + 'px';
+  }
+
+  function showPreview(btn, href) {
+    clearTimeout(hideTimeout);
+
+    // Update URL bar
+    try {
+      var url = new URL(href);
+      var path = url.pathname;
+      urlEl.textContent = url.hostname + (path.length > 28 ? path.slice(0, 28) + '\u2026' : path);
+    } catch (e) {
+      urlEl.textContent = href;
+    }
+
+    // Only reload screenshot when href changes
+    if (currentHref !== href) {
+      currentHref = href;
+      imgEl.style.display = 'none';
+      loadingEl.style.display = 'flex';
+      loadingEl.textContent = 'Loading preview\u2026';
+      imgEl.src = '';
+
+      var screenshotUrl = getScreenshotUrl(href);
+      imgEl.onload = function () {
+        loadingEl.style.display = 'none';
+        imgEl.style.display = 'block';
+      };
+      imgEl.onerror = function () {
+        loadingEl.textContent = 'Preview unavailable';
+      };
+      imgEl.src = screenshotUrl;
+    }
+
+    positionPreview(btn);
+    previewEl.classList.add('psp-visible');
+  }
+
+  function hidePreview() {
+    hideTimeout = setTimeout(function () {
+      previewEl.classList.remove('psp-visible');
+    }, 150);
+  }
+
+  // Attach only to buttons inside .project-links with a real URL
+  document.querySelectorAll('.project-links .btn[href]').forEach(function (btn) {
+    var href = btn.getAttribute('href');
+    if (!href || href === '#') return;
+
+    btn.addEventListener('mouseenter', function () { showPreview(btn, href); });
+    btn.addEventListener('mouseleave', hidePreview);
+    btn.addEventListener('focus', function () { showPreview(btn, href); });
+    btn.addEventListener('blur', hidePreview);
+  });
+}());
+
 const message = `🔐 Hidden Challenge – For the Curious Minds
 
 Some developers build projects.
