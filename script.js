@@ -400,7 +400,7 @@ gsap.from('.about-text', {
 // Stat cards stagger
 gsap.from('.stat-card', {
   scrollTrigger: { trigger: '.about-stats', start: 'top 80%' },
-  opacity: 0, y: 40, duration: 0.6, stagger: 0.12, ease: 'power3.out',
+  opacity: 0, scale:0.95, duration: 0.6, stagger: 0.12, ease: 'power3.out',
 });
 
 // Skill categories
