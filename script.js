@@ -412,7 +412,7 @@ gsap.from('.skill-category', {
 // Tech icons stagger with bounce
 gsap.from('.tech-icon', {
   scrollTrigger: { trigger: '.tech-icons', start: 'top 85%' },
-  opacity: 0, scale: 0.4, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
+  opacity: 0, scale: 1, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
 });
 
 // Project cards stagger
