@@ -566,6 +566,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Project Screen Previews
 // ===========================
 
+const fallbackImages = {
+  "https://arpanchristian2507.github.io/project1": "images/previews/VoiceBridge.png"};
+
 (function initProjectScreenPreviews() {
   // Build the preview popup (mini browser window)
   const previewEl = document.createElement('div');
@@ -590,9 +593,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
   var hideTimeout;
   var currentHref = null;
 
-  function getScreenshotUrl(pageUrl) {
-    return 'https://image.thum.io/get/width/560/crop/320/' + encodeURIComponent(pageUrl);
-  }
+function getScreenshotUrl(pageUrl) {
+  return 'https://api.microlink.io/?screenshot=true&meta=false&embed=screenshot.url&colorScheme=dark&url=' 
+    + encodeURIComponent(pageUrl);
+}
 
   function positionPreview(btn) {
     // Measure after content is set so height is correct
@@ -623,23 +627,23 @@ document.getElementById('year').textContent = new Date().getFullYear();
     }
 
     // Only reload screenshot when href changes
-    if (currentHref !== href) {
-      currentHref = href;
-      imgEl.style.display = 'none';
-      loadingEl.style.display = 'flex';
-      loadingEl.textContent = 'Loading preview\u2026';
-      imgEl.src = '';
+    var screenshotUrl = getScreenshotUrl(href);
+    var fallback = fallbackImages[href];
 
-      var screenshotUrl = getScreenshotUrl(href);
-      imgEl.onload = function () {
-        loadingEl.style.display = 'none';
-        imgEl.style.display = 'block';
-      };
-      imgEl.onerror = function () {
-        loadingEl.textContent = 'Preview unavailable';
-      };
-      imgEl.src = screenshotUrl;
-    }
+imgEl.onload = function () {
+  loadingEl.style.display = 'none';
+  imgEl.style.display = 'block';
+};
+
+imgEl.onerror = function () {
+  if (fallback) {
+    imgEl.src = fallback; // fallback image
+  } else {
+    loadingEl.textContent = 'Preview unavailable';
+  }
+};
+
+imgEl.src = screenshotUrl;
 
     positionPreview(btn);
     previewEl.classList.add('psp-visible');

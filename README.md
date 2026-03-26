@@ -19,7 +19,7 @@
 
 ## 🖥️ Preview
 
-![Portfolio Preview](screenshots/preview.png)
+![Portfolio Preview](images/preview.png)
 
 > *The hero section features a live 3D particle field and an animated wireframe torus powered by Three.js. Every scroll reveals something new.*
 
