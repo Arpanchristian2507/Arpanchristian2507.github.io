@@ -506,84 +506,116 @@ ul {
   background: var(--color-bg);
 }
 
-.skills-grid {
+.skills-categories {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  margin-bottom: 3rem;
-}
-
-.skill-category h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-white);
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.skill-item {
-  margin-bottom: 1.2rem;
-}
-
-.skill-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  color: var(--color-text);
-  margin-bottom: 0.4rem;
-}
-
-.skill-bar {
-  height: 8px;
-  background: var(--color-surface);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.skill-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-  border-radius: 4px;
-  width: 0;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tech-icons {
-  display: flex;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  justify-content: center;
-  margin-top: 1rem;
 }
 
-.tech-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 1.2rem;
+.skills-cat-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  min-width: 96px;
-  transition: transform var(--transition), border-color var(--transition);
+  padding: 1.75rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-.tech-icon:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-primary);
+.skills-cat-card:hover {
+  border-color: rgba(108, 99, 255, 0.4);
+  box-shadow: 0 0 28px rgba(108, 99, 255, 0.09);
 }
 
-.tech-icon i {
-  font-size: clamp(2.2rem, 4vw, 2.6rem);
-  line-height: 1;
+.skills-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skills-cat-header i {
+  font-size: 1rem;
   color: var(--color-primary);
 }
 
-.tech-icon span {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
+.skills-cat-header h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.skills-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.skill-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.9rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: default;
+  position: relative;
+  transition: transform var(--transition), border-color var(--transition),
+    background var(--transition), box-shadow var(--transition);
+}
+
+.skill-pill:hover {
+  transform: scale(1.025);
+  border-color: var(--color-primary);
+  background: rgba(108, 99, 255, 0.08);
+  box-shadow: 0 0 16px rgba(108, 99, 255, 0.22);
+}
+
+.skill-pill .skill-icon {
+  font-size: 1.05rem;
+  color: var(--color-primary);
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: color var(--transition);
+}
+
+.skill-pill:hover .skill-icon {
+  color: var(--color-accent);
+}
+
+.skill-pill .skill-name {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  flex: 1;
+}
+
+/* Tooltip */
+.skill-pill[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.72rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  box-shadow: var(--shadow);
+}
+
+.skill-pill[data-tooltip]:hover::after {
+  opacity: 1;
 }
 
 /* ===========================
@@ -831,9 +863,9 @@ footer p {
     gap: 2.5rem;
   }
 
-  .skills-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .skills-categories {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 
   #hero {
@@ -877,6 +909,10 @@ footer p {
 
   .about-stats {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .skills-categories {
+    grid-template-columns: 1fr;
   }
 
   footer .container {
