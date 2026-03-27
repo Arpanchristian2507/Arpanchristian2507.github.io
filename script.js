@@ -111,7 +111,7 @@ function animateCounter(el) {
 }
 
 // ===========================
-// Functional Observer (counters + skill bars)
+// Functional Observer (counters)
 // ===========================
 
 const functionalObserver = new IntersectionObserver(
@@ -121,11 +121,6 @@ const functionalObserver = new IntersectionObserver(
         if (entry.target.id === 'about') {
           document.querySelectorAll('.stat-number').forEach(animateCounter);
         }
-        if (entry.target.id === 'skills') {
-          document.querySelectorAll('.skill-fill').forEach((bar) => {
-            bar.style.width = bar.getAttribute('data-width') + '%';
-          });
-        }
         functionalObserver.unobserve(entry.target);
       }
     });
@@ -133,7 +128,7 @@ const functionalObserver = new IntersectionObserver(
   { threshold: 0.15 }
 );
 
-document.querySelectorAll('#about, #skills').forEach((el) => functionalObserver.observe(el));
+document.querySelectorAll('#about').forEach((el) => functionalObserver.observe(el));
 
 // ===========================
 // Three.js Hero Background
@@ -403,16 +398,16 @@ gsap.from('.stat-card', {
   opacity: 0, scale:0.95, duration: 0.6, stagger: 0.12, ease: 'power3.out',
 });
 
-// Skill categories
-gsap.from('.skill-category', {
-  scrollTrigger: { trigger: '.skills-grid', start: 'top 80%' },
-  opacity: 0, x: -40, duration: 0.7, stagger: 0.2, ease: 'power3.out',
+// Skill category cards
+gsap.from('.skills-cat-card', {
+  scrollTrigger: { trigger: '.skills-categories', start: 'top 80%' },
+  opacity: 0, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out',
 });
 
-// Tech icons stagger with bounce
-gsap.from('.tech-icon', {
-  scrollTrigger: { trigger: '.tech-icons', start: 'top 85%' },
-  opacity: 0, scale: 1, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
+// Skill pills stagger
+gsap.from('.skill-pill', {
+  scrollTrigger: { trigger: '.skills-categories', start: 'top 75%' },
+  opacity: 0, scale: 0.88, duration: 0.35, stagger: 0.04, ease: 'back.out(1.4)',
 });
 
 // Project cards stagger
