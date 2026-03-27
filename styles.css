@@ -593,29 +593,6 @@ ul {
   flex: 1;
 }
 
-.skill-level-dots {
-  display: flex;
-  gap: 3px;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.skill-level-dots .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-border);
-  transition: background var(--transition);
-}
-
-.skill-level-dots .dot.active {
-  background: var(--color-primary);
-}
-
-.skill-pill:hover .skill-level-dots .dot.active {
-  background: var(--color-accent);
-}
-
 /* Tooltip */
 .skill-pill[data-tooltip]::after {
   content: attr(data-tooltip);
