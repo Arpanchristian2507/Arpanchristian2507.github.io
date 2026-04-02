@@ -136,10 +136,35 @@ document.querySelectorAll('#about').forEach((el) => functionalObserver.observe(e
 
 (function initThree() {
   const canvas = document.getElementById('hero-canvas');
+  const heroSection = document.getElementById('hero');
+
+  if (!canvas || !heroSection) {
+    console.warn('Hero background skipped: missing #hero or #hero-canvas.');
+    return;
+  }
+
+  if (typeof THREE === 'undefined') {
+    console.warn('Hero background skipped: Three.js failed to load.');
+    return;
+  }
+
+  // Prevent accidental double-init if this script is evaluated more than once.
+  if (canvas.dataset.threeInitialized === 'true') {
+    return;
+  }
+  canvas.dataset.threeInitialized = 'true';
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  } catch (err) {
+    console.warn('Hero background skipped: WebGL context unavailable.', err);
+    return;
+  }
+
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   camera.position.z = 30;
@@ -170,9 +195,6 @@ document.querySelectorAll('#about').forEach((el) => functionalObserver.observe(e
     mouseX = (e.clientX / window.innerWidth - 0.5) * 4;
     mouseY = -(e.clientY / window.innerHeight - 0.5) * 4;
   });
-  window.addEventListener("load", function () {
-    initThree();
-});
 
   function tick() {
     requestAnimationFrame(tick);
@@ -415,6 +437,35 @@ gsap.from('.project-card', {
   scrollTrigger: { trigger: '.projects-grid', start: 'top 80%' },
   opacity: 0, y: 60, duration: 0.7, stagger: 0.15, ease: 'power3.out',
 });
+
+// Projects show more toggle
+(function initProjectsToggle() {
+  const toggleBtn = document.getElementById('toggle-other-projects');
+  const otherWrap = document.getElementById('other-projects-wrap');
+  if (!toggleBtn || !otherWrap) return;
+
+  const labelText = 'Show More Projects';
+  const hideText = 'Show Less Projects';
+
+  toggleBtn.addEventListener('click', () => {
+    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    const nextState = !isExpanded;
+
+    toggleBtn.setAttribute('aria-expanded', String(nextState));
+    toggleBtn.classList.toggle('is-open', nextState);
+    toggleBtn.childNodes[0].nodeValue = (nextState ? hideText : labelText) + ' ';
+    otherWrap.hidden = !nextState;
+
+    if (nextState && window.gsap) {
+      const cards = otherWrap.querySelectorAll('.project-card');
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: 'power3.out' }
+      );
+    }
+  });
+}());
 
 // Contact section
 gsap.from('.contact-info', {

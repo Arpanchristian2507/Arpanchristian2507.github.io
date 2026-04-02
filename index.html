@@ -19,10 +19,10 @@
 
   </head>
 <!-- THREE.js from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" ></script>
 <!-- GSAP from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" ></script>
 
   <body>
     <!-- Navigation -->
@@ -101,9 +101,9 @@
           </div>
           <div class="about-stats">
             <!-- TODO: Link to projects section -->
-            <a href="#Projects" class = "stat-card-link"> 
+            <a href="#projects" class = "stat-card-link"> 
               <div class="stat-card">
-                <span class="stat-number" data-target="10">0</span>
+                <span class="stat-number" data-target="9">0</span>
                 <span class="stat-label">Projects Completed</span>
               </div>
             </a>
@@ -231,79 +231,175 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects">
-      <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <div class="projects-grid">
-          <div class="project-card">
-            <div class="project-image">
-              <i class="fas fa-laptop-code"></i>
-            </div>
-            <div class="project-info">
-              <h3>Portfolio Website</h3>
-              <p>A responsive personal portfolio built with HTML, CSS, and JavaScript showcasing projects and skills.</p>
-              <div class="project-tags">
-                <span class="tag">HTML</span>
-                <span class="tag">CSS</span>
-                <span class="tag">JavaScript</span>
-              </div>
-              <div class="project-links">
-                <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
-                <a href="https://github.com/Arpanchristian2507/Portfolio" target="_blank" class="btn btn-sm btn-outline">
-                  <i class="fab fa-github"></i> Code
-                </a>
-              </div>
-            </div>
+<section id="projects">
+  <div class="container">
+    <h2 class="section-title">Projects</h2>
+    <p class="projects-intro">
+      A mix of accessibility-first products, automation systems, and practical software engineering builds.
+      Explore featured work first, then expand to see additional projects.
+    </p>
+
+    <!-- FEATURED PROJECTS -->
+    <h3 class="subsection-title">Featured Projects</h3>
+    <div class="projects-grid">
+
+      <!-- VoiceBridge -->
+      <div class="project-card featured">
+        <div class="project-image">
+          <i class="fas fa-universal-access"></i>
+        </div>
+        <div class="project-info">
+          <h3>VoiceBridge <span class="badge">Featured</span></h3>
+          <p>
+            An AI-powered accessibility app that enables visually impaired users to initiate WhatsApp calls using voice commands or hardware buttons, with real-time spoken feedback.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Kotlin</span>
+            <span class="tag">Accessibility</span>
+            <span class="tag">AI</span>
           </div>
-          <div class="project-card">
-            <div class="project-image">
-              <i class="fas fa-paint-brush"></i>
-            </div>
-            <div class="project-info">
-              <h3>UI Design System</h3>
-              <p>A comprehensive collection of reusable UI components with consistent styling and interactions.</p>
-              <div class="project-tags">
-                <span class="tag">CSS</span>
-                <span class="tag">Design</span>
-              </div>
-              <div class="project-links">
-                <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
-                <a href="#" class="btn btn-sm btn-outline">
-                  <i class="fab fa-github"></i> Code
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="project-card">
-            <div class="project-image">
-              <i class="fas fa-mobile-alt"></i>
-            </div>
-            <div class="project-info">
-                <h3>VoiceBridge (In Progress)</h3>
-  <p>
-    VoiceBridge is an Android accessibility app that helps visually impaired users quickly contact a trusted person
-    via a voice command or a 3-second press of the volume button. The app opens WhatsApp and provides spoken feedback to guide the user.
-  </p>
-  
-  <div class="project-tags">
-    <span class="tag">Kotlin</span>
-    <span class="tag">Android Studio</span>
-    <span class="tag">Accessibility</span>
-  </div>
-  
-  <div class="project-links">
-    <a href="https://github.com/Arpanchristian2507/VoiceBridge/blob/main/README.md" class="btn btn-sm btn-primary">Project Details</a>
-    <a href="https://github.com/Arpanchristian2507/VoiceBridge" class="btn btn-sm btn-outline">
-      <i class="fab fa-github"></i> Code
-    </a>
-  </div>
-                </a>
-              </div>
-            </div>
+          <div class="project-links">
+            <a href="https://github.com/Arpanchristian2507/VoiceBridge/blob/main/README.md" class="btn btn-sm btn-primary">View Project</a>
+            <a href="https://github.com/Arpanchristian2507/VoiceBridge" class="btn btn-sm btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          
           </div>
         </div>
       </div>
-    </section>
+
+      <!-- Audio Library -->
+      <div class="project-card featured">
+        <div class="project-image">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="project-info">
+          <h3>Audio Library App <span class="badge">Featured</span></h3>
+          <p>
+            A full-featured Android media player supporting local and online audio streaming, with synchronized PDF viewing for audiobook-style experiences.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Kotlin</span>
+            <span class="tag">Android</span>
+            <span class="tag">Media</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-sm btn-primary">Demo</a>
+          </div>
+        </div>
+      </div>
+      <!-- Task Manager Widget -->
+      <div class="project-card featured">
+        <div class="project-image">
+          <i class="fas fa-check-square"></i>
+        </div>
+        <div class="project-info">
+          <h3>Task Widget App <span class="badge">Featured</span></h3>
+          <p>
+            An Android home screen widget that allows users to manage daily tasks with recurring checklists, real-time updates, and automatic reset functionality.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Kotlin</span>
+            <span class="tag">Android</span>
+            <span class="tag">Widgets</span>
+            <span class="tag">UI/UX</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-sm btn-primary">View Project</a>
+            <a href="#" class="btn btn-sm btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jarvis -->
+      <div class="project-card featured">
+        <div class="project-image">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="project-info">
+          <h3>Jarvis AI Assistant <span class="badge">Featured</span></h3>
+          <p>
+            A hybrid AI assistant system designed to run on mobile devices, capable of offline automation and intelligent online decision-making.
+          </p>
+          <div class="project-tags">
+            <span class="tag">AI</span>
+            <span class="tag">Automation</span>
+            <span class="tag">Systems</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-sm btn-primary">Concept</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Python Assistant -->
+      <div class="project-card featured">
+        <div class="project-image">
+          <i class="fas fa-microphone"></i>
+        </div>
+        <div class="project-info">
+          <h3>Voice-Controlled Python Assistant <span class="badge">Featured</span></h3>
+          <p>
+            A voice-driven automation system that executes system-level commands and responds intelligently to user input.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Automation</span>
+            <span class="tag">Voice AI</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-sm btn-primary">Demo</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="projects-toggle-wrap">
+      <button
+        id="toggle-other-projects"
+        class="btn btn-outline projects-toggle-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="other-projects-wrap"
+      >
+        Show More Projects
+        <i class="fas fa-chevron-down toggle-icon" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- OTHER PROJECTS -->
+    <div id="other-projects-wrap" class="other-projects-wrap" hidden>
+      <h3 class="subsection-title">Other Projects</h3>
+      <div class="projects-grid projects-grid-other">
+
+        <div class="project-card">
+          <h3>Map & Route System</h3>
+          <p>Java-based system for route tracking, obstacle detection, and distance calculation.</p>
+        </div>
+
+        <div class="project-card">
+          <h3>Train Management System</h3>
+          <p>Linked-list-based train simulation using object-oriented design.</p>
+        </div>
+
+        <div class="project-card">
+          <h3>User Persistence System</h3>
+          <p>Backend-style login/signup system with file-based data storage.</p>
+        </div>
+
+        <div class="project-card">
+          <h3>CSV Processing Tool</h3>
+          <p>Java program to parse, validate, and format structured data.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
 <div id="dev-unlock" class="coffee-modal">
   <div class="coffee-content">
     <h2>🔐 Developer Access</h2>
