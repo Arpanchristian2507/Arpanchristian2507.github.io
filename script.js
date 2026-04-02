@@ -422,14 +422,34 @@ gsap.from('.stat-card', {
 
 // Skill category cards
 gsap.from('.skills-cat-card', {
-  scrollTrigger: { trigger: '.skills-categories', start: 'top 80%' },
-  opacity: 0, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out',
+  scrollTrigger: {
+    trigger: '.skills-categories',
+    start: 'top 80%',
+    once: true,
+  },
+  immediateRender: false,
+  opacity: 0,
+  scale: 0.95,
+  duration: 0.6,
+  stagger: 0.15,
+  ease: 'power3.out',
+  clearProps: 'all',
 });
 
 // Skill pills stagger
 gsap.from('.skill-pill', {
-  scrollTrigger: { trigger: '.skills-categories', start: 'top 75%' },
-  opacity: 0, scale: 0.88, duration: 0.35, stagger: 0.04, ease: 'back.out(1.4)',
+  scrollTrigger: {
+    trigger: '.skills-categories',
+    start: 'top 75%',
+    once: true,
+  },
+  immediateRender: false,
+  opacity: 0,
+  scale: 0.88,
+  duration: 0.35,
+  stagger: 0.04,
+  ease: 'back.out(1.4)',
+  clearProps: 'all',
 });
 
 // Project cards stagger
@@ -475,6 +495,10 @@ gsap.from('.contact-info', {
 gsap.from('.contact-form', {
   scrollTrigger: { trigger: '.contact-grid', start: 'top 80%' },
   opacity: 0, x: 50, duration: 0.8, ease: 'power3.out',
+});
+
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
 });
 
 // ===========================
