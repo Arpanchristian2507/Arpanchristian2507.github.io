@@ -75,7 +75,7 @@ Hidden within the portfolio is a **multi-stage Capture The Flag (CTF) puzzle** d
 </div>
 
 ---
-
+<!--
 ## 💼 Skills
 
 ```
@@ -90,7 +90,7 @@ Tools & Others
   └── UI / UX            █████████████████░░░░░  75%
 ```
 
----
+--->
 
 ## 🗂️ Featured Projects
 
