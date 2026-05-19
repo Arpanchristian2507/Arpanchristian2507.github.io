@@ -24,7 +24,7 @@
 > *The hero section features a live 3D particle field and an animated wireframe torus powered by Three.js. Every scroll reveals something new.*
 
 ---
-
+<!--
 ## ✨ What Makes This Portfolio Stand Out?
 
 This isn't your average portfolio. It's packed with details that reward the curious:
@@ -41,7 +41,7 @@ This isn't your average portfolio. It's packed with details that reward the curi
 | 🏆 **Achievement Badge** | Solve all stages of the CTF and earn a persistent digital badge saved in your browser |
 | 📬 **Contact Form** | Client-side validated contact form built right in |
 
----
+--->
 
 ## 🕵️ Secret: The Hidden CTF Challenge
 
