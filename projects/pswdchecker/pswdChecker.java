@@ -30,6 +30,7 @@ public class pswdChecker {
         String pswd = input.nextLine();
 
         checkPassword(pswd, username);
+        input.close();
     }
 
 
