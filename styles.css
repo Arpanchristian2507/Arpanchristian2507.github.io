@@ -1641,3 +1641,38 @@ footer p {
   align-items: center;
   gap: 0.4rem;
 }
+
+/* PASSWORD HIGHLIGHTING */
+
+.password-wrapper{
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input{
+    width: 100%;
+    padding-right: 50px; /* space for icon */
+    box-sizing: border-box;
+}
+
+#togglePassword{
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    font-size: 18px;
+    color: #888;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#togglePassword:hover{
+    color: white;
+}

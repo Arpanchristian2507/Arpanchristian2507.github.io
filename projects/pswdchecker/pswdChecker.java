@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+// This is a side project which I was working to make myself familiar with Java.
+// It is a simple password strength checker that evaluates the strength of 
+// a password based on various criteria such as length, character diversity, and common patterns.
+
 public class pswdChecker {
 
     public static final String RED = "\u001B[31m";
